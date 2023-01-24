@@ -1,0 +1,117 @@
+Log Created
+Pygame Version: 2.1.2
+Platformer version: SFA Platformer 0.1a
+InputMode: keyboard
+DebugMode: True
+CurrentDirectory: C:\Users\Impar\Desktop\LumberjackPlatformer_self_testing
+Application starting
+Starting keyboard mode
+Level One mode chosen
+Level one loading for first time
+Level one loading for first time
+Level one loading for first time
+Level one loading for first time
+Level one loading for first time
+Level one loading for first time
+Level one loading for first time
+Level one loading for first time
+Level one loading for first time
+Level one loading for first time
+Level one loading for first time
+Level one loading for first time
+Level one loading for first time
+Level one loading for first time
+Level one loading for first time
+Level one loading for first time
+Level one loading for first time
+Level one loading for first time
+Level one loading for first time
+Level one loading for first time
+Level one loading for first time
+Level one loading for first time
+Level one loading for first time
+Level one loading for first time
+Level one loading for first time
+Level one loading for first time
+Level one loading for first time
+Level one loading for first time
+Level one loading for first time
+Level one loading for first time
+Level one loading for first time
+Level one loading for first time
+Level one loading for first time
+Level one loading for first time
+Level one loading for first time
+Level one loading for first time
+Level one loading for first time
+Level one loading for first time
+Level one loading for first time
+Level one loading for first time
+Level one loading for first time
+Level one loading for first time
+Level one loading for first time
+Level one loading for first time
+Level one loading for first time
+Level one loading for first time
+Level one loading for first time
+Level one loading for first time
+Level one loading for first time
+Level one loading for first time
+Level one loading for first time
+Level one loading for first time
+Level one loading for first time
+Level one loading for first time
+Level one loading for first time
+Level one loading for first time
+Level one loading for first time
+Level one loading for first time
+Level one loading for first time
+Level one loading for first time
+Level one loading for first time
+Level one loading for first time
+Level one loading for first time
+Level one loading for first time
+Level one loading for first time
+Level one loading for first time
+Level one loading for first time
+Level one loading for first time
+Level one loading for first time
+Level one loading for first time
+Level one loading for first time
+Level one loading for first time
+Level one loading for first time
+Level one loading for first time
+Level one loading for first time
+Level one loading for first time
+Level one loading for first time
+Level one loading for first time
+Level one loading for first time
+Level one loading for first time
+Level one loading for first time
+Level one loading for first time
+Level one loading for first time
+Level one loading for first time
+Level one loading for first time
+Level one loading for first time
+Level one loading for first time
+Level one loading for first time
+Level one loading for first time
+Level one loading for first time
+Level one loading for first time
+Level one loading for first time
+Level one loading for first time
+Level one loading for first time
+Level one loading for first time
+Level one loading for first time
+Level one loading for first time
+Level one loading for first time
+Level one loading for first time
+Level one loading for first time
+Level one loading for first time
+Level one loading for first time
+Level one loading for first time
+Level one loading for first time
+Level one loading for first time
+Level one loading for first time
+Level one loading for first time
+Process ending, nominal shutdown
