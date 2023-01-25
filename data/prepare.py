@@ -92,7 +92,8 @@ _screen.fill(BACKGROUND_COLOR)
 _render = SMALL_FONT.render("CS students are slacking, please wait warmly~~", 0, pygame.Color("white"))
 _screen.blit(_render, _render.get_rect(center=SCREEN_RECT.center))
 pygame.display.update()
-pygame.time.wait(2000)
+pygame.time.wait(1000)
+
 
 
 #The default controls for the game. CHANGE FOR JOYSTICK?

@@ -1,0 +1,6 @@
+Log Created
+Pygame Version: 2.1.2
+Platformer version: SFA Platformer 0.1a
+InputMode: keyboard
+DebugMode: True
+CurrentDirectory: C:\Users\Impar\Documents\GitHub\Platformer-file-structure-testing-Alex

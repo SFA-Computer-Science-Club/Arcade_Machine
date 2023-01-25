@@ -47,11 +47,15 @@ class Control(object):
                 self.done = True
             elif event.type == pg.KEYDOWN:
                 self.keys = pg.key.get_pressed()
-                self.toggle_show_fps(event.key)
+                # self.toggle_show_fps(event.key)
+
             elif event.type == pg.KEYUP:
                 self.keys = pg.key.get_pressed()
             self.state_machine.get_event(event)
     
+    # def toggle_show_fps(self,key):
+
+
     def show_fps(self):
         """
         Display the current FPS
