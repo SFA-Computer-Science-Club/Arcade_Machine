@@ -35,6 +35,7 @@ brickBlockTexture = pygame.image.load(os.path.join('resources','image','brick_bl
 sfaCubeTexture = pygame.image.load(os.path.join('resources','image','sfa_cube.png'))
 SPLASH1 = pygame.image.load(os.path.join('resources','image','SFA_CS_SPLASH.png'))
 titlewords = pygame.image.load(os.path.join('resources','image','Titlename.png'))
+playerImage = pygame.image.load(os.path.join('resources','image','LumberjackMale.png'))
 
 
 #maps
