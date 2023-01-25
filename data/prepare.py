@@ -95,6 +95,7 @@ pygame.display.update()
 pygame.time.wait(1000)
 
 
+
 #The default controls for the game. CHANGE FOR JOYSTICK?
 DEFAULT_CONTROLS = {pygame.K_DOWN  : "down",
                     pygame.K_UP    : "up",

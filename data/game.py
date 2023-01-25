@@ -92,7 +92,6 @@ def game():
         return 1
 
 
-
     while True: #Main game loop
         for event in pygame.event.get(): #Loops through every event, can be keyboard or mouse input etc
             if event.type == pygame.QUIT:
@@ -106,4 +105,5 @@ def game():
             levelOne()
         prepare.clock.tick(60)
         pygame.display.flip()
+
 
