@@ -1,2 +1,2 @@
-# Arcade_Machine
-SFA Computer Science Club's Official Repository for Arcade Machine Project
+# LumberjackPlatformer
+SFA Computer Science Club repository for the main game to be ran on the arcade machine: the Lumberjack Platformer!
