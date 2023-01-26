@@ -53,6 +53,10 @@ class StateMachine(object):
         """
         self.state.get_event(event)
 
+    def get_key_event(self, keyEvent):
+        #testing to see if this works
+        self.state.get_key_event(keyEvent)
+
 class _State(object):
     """
     Creational Design Patterns - concerned with enabling the creation of objects while abstracting/hiding away the object's creation logic.

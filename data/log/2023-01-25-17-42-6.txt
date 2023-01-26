@@ -1,0 +1,7 @@
+Log Created
+Pygame Version: 2.1.2
+Platformer version: SFA Platformer 0.1a
+InputMode: keyboard
+DebugMode: True
+CurrentDirectory: C:\Users\hernandej50\Documents\GitHub\Arcade_Machine
+ resources\map_data\TestMap2.csv: loading for first time
