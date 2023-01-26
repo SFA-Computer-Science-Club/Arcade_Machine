@@ -42,16 +42,19 @@ class Control(object):
         Process all events and pass them down to the state_machine.
         The f5 key globally turns on/off the display of FPS in the caption
         """
+        keys = pg.key.get_pressed()
         for event in pg.event.get():
             if event.type == pg.QUIT:
                 self.done = True
             elif event.type == pg.KEYDOWN:
-                self.keys = pg.key.get_pressed()
+                pass
                 # self.toggle_show_fps(event.key)
 
             elif event.type == pg.KEYUP:
                 self.keys = pg.key.get_pressed()
             self.state_machine.get_event(event)
+        self.state_machine.get_key_event(keys)
+
     
     # def toggle_show_fps(self,key):
 

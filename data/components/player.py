@@ -5,19 +5,23 @@ class Player(object):
     def __init__(self):
         self.image = prepare.playerImage
         self.health = 100
-        self.speed = 0
-        self.x = 0
-        self.y = 0
+        self.speed = 4
+        self.x = 100
+        self.y = 200
         self.score = 0
         self.jumpHeight = 0
         self.state = 0
         self.direction = None
 
     def move(self, event):
-
-        keys = pg.key.get_pressed()
-        if keys[pg.K_RIGHT]:
-            self.x += 10
+        if event[pg.K_d]:
+            self.x += 1 * self.speed
+        if event[pg.K_a]:
+            self.x -= 1 * self.speed
+        if event[pg.K_s]:
+            self.y += 1 * self.speed
+        if event[pg.K_w]:
+            self.y -= 1 * self.speed
 
         # if event.type == pg.KEYUP:
         #     self.direction = None

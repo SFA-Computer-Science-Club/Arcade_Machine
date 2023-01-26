@@ -60,6 +60,9 @@ class Title(state_machine._State):
             self.done = True
             self.music.stop()
 
+    def get_key_event(self, key):
+        pass
+
 
 class AnyKey(pg.sprite.Sprite):
     def __init__(self, *groups):

@@ -36,3 +36,6 @@ class Splash(state_machine._State):
         Get events from Control. Changes to next state on any key press.
         """
         self.done = event.type == pg.KEYDOWN
+
+    def get_key_event(self, key):
+        pass

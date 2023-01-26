@@ -24,8 +24,12 @@ class Game(state_machine._State):
             self.world = world.WorldMap()
     
     def get_event(self, event):
-        if event.type == pg.KEYDOWN:
-            self.player.move(event)
+        pass
+        # if event.type == pg.KEYDOWN:
+        #     self.player.move(event)
+
+    def get_key_event(self, keyEvent):
+        self.player.move(keyEvent)
 
 
     def update(self, keys, now):
