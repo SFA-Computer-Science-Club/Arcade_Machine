@@ -37,9 +37,9 @@ class Player(object):
         if self.direction_stack:
             self.direction = self.direction_stack[-1]
             if self.direction == "right":
-                self.x += 3
+                self.x += 6
             elif self.direction == "left":
-                self.x += -3
+                self.x += -6
 
         # if event.type == pg.KEYUP:
         #     self.direction = None

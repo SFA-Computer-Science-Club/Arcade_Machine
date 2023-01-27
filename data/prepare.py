@@ -55,10 +55,10 @@ chosenMode = "none"
 loaded = False
 
 #screen size for game
-SCREEN_SIZE = (640, 512)
+SCREEN_SIZE = (1280, 1000)
 
 #tile dimension
-TILE_DIMENSION = (32,32)
+TILE_DIMENSION = (64,64)
 
 #name of game
 ORIGINAL_CAPTION = "SFA Platformer 0.1a"
