@@ -25,20 +25,20 @@ class WorldMap(object):
             # Iterate over each row in the csv using reader object
             for rowIndex, row in enumerate(csv_reader):
                 for columnIndex, column in enumerate(row):
-                    x = columnIndex * 64
-                    y = rowIndex * 64
+                    x = columnIndex * prepare.TILE_DIMENSION[0]
+                    y = rowIndex * prepare.TILE_DIMENSION[1]
                     if column == '1':
-                        prepare._screen.blit(pg.transform.scale(prepare.dirtTexture, (64,64)), (x,y))                    
+                        prepare._screen.blit(pg.transform.scale(prepare.dirtTexture, prepare.TILE_DIMENSION), (x,y))
                     elif column == '2':
-                        prepare._screen.blit(pg.transform.scale(prepare.goldStoneTexture, (64,64)), (x,y))
+                        prepare._screen.blit(pg.transform.scale(prepare.goldStoneTexture, prepare.TILE_DIMENSION), (x,y))
                     elif column == '3':
-                        prepare._screen.blit(pg.transform.scale(prepare.grassTexture, (64,64)), (x,y))
+                        prepare._screen.blit(pg.transform.scale(prepare.grassTexture, prepare.TILE_DIMENSION), (x,y))
                     elif column == '4':
-                        prepare._screen.blit(pg.transform.scale(prepare.sfaCubeTexture, (64,64)), (x,y))                    
+                        prepare._screen.blit(pg.transform.scale(prepare.sfaCubeTexture, prepare.TILE_DIMENSION), (x,y))                    
                     elif column == '5':
-                        prepare._screen.blit(pg.transform.scale(prepare.stoneTexture, (64,64)), (x,y))
+                        prepare._screen.blit(pg.transform.scale(prepare.stoneTexture, prepare.TILE_DIMENSION), (x,y))
                     elif column == '6':
-                        prepare._screen.blit(pg.transform.scale(prepare.brickBlockTexture, (64,64)), (x,y))
+                        prepare._screen.blit(pg.transform.scale(prepare.brickBlockTexture, prepare.TILE_DIMENSION), (x,y))
     
     def update(self, now):
         self.load(self.name)

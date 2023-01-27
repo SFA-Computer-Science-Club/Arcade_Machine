@@ -36,6 +36,7 @@ sfaCubeTexture = pygame.image.load(os.path.join('resources','image','sfa_cube.pn
 SPLASH1 = pygame.image.load(os.path.join('resources','image','SFA_CS_SPLASH.png'))
 titlewords = pygame.image.load(os.path.join('resources','image','Titlename.png'))
 
+playerImage = pygame.image.load(os.path.join('resources','image','LumberjackMale.png'))
 
 #maps
 testMap = os.path.join('resources','map_data','TestMap.csv')
@@ -54,7 +55,10 @@ chosenMode = "none"
 loaded = False
 
 #screen size for game
-SCREEN_SIZE = (1280, 1024)
+SCREEN_SIZE = (640, 512)
+
+#tile dimension
+TILE_DIMENSION = (32,32)
 
 #name of game
 ORIGINAL_CAPTION = "SFA Platformer 0.1a"
@@ -98,6 +102,5 @@ pygame.time.wait(1000)
 
 #The default controls for the game. CHANGE FOR JOYSTICK?
 DEFAULT_CONTROLS = {pygame.K_DOWN  : "down",
-                    pygame.K_UP    : "up",
                     pygame.K_LEFT  : "left",
                     pygame.K_RIGHT : "right"}

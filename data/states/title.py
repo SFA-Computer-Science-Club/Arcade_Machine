@@ -15,7 +15,7 @@ class Title(state_machine._State):
     """This State is updated while showing the title screen"""
     def __init__(self):
         state_machine._State.__init__(self)
-        title = prepare.titlewords
+        title = pg.transform.scale(prepare.titlewords, (600, 164))
         if title.get_alpha():
             title = title.convert_alpha()
         else:

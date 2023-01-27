@@ -4,7 +4,7 @@ import os
 import subprocess
 import random
 from .. import prepare, state_machine, logging
-from  ..components import world
+from  ..components import world, player
 
 class Game(state_machine._State):
     """Core state for the gameplay."""
@@ -12,6 +12,7 @@ class Game(state_machine._State):
         state_machine._State.__init__(self)
         self.world = None
         self.reset_map = True
+        self.player = player.Player()
 
     def startup(self, now, persistant):
         """
@@ -22,16 +23,26 @@ class Game(state_machine._State):
             #reset game to beginning and reset all variables.
             self.world = world.WorldMap()
     
-    def get_event(self, event):
-        pass
 
+    def get_event(self, event):
+
+        if event.type == pg.KEYDOWN:
+            print("add")
+            self.player.add_direction(event.key)
+            if event.key == pg.K_UP:
+                self.player.jump()
+        elif event.type == pg.KEYUP:
+            print("pop")
+            self.player.pop_direction(event.key)
 
     def update(self, keys, now):
         self.now = now
         self.world.update(now)
+        self.player.update(now)
 
     def draw(self, surface, interpolate):
         self.world.draw(surface, interpolate)
+        self.player.draw(surface)
 
 
         

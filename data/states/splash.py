@@ -15,7 +15,8 @@ class Splash(state_machine._State):
         self.timeout = 5
         self.alpha = 0  #The current alpha(transparency level; from 1 to 255)
         self.alpha_speed  = 2  #Alpha change per frame
-        self.image = prepare.SPLASH1.copy().convert()
+        self.copy = prepare.SPLASH1.copy().convert()
+        self.image = pg.transform.scale(self.copy, (400,400))
         self.image.set_alpha(self.alpha)
         self.rect = self.image.get_rect(center=prepare.SCREEN_RECT.center)
 
