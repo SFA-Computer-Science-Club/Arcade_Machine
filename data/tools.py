@@ -6,6 +6,8 @@ Can hold future resource helper functions.
 import os
 import pygame as pg
 from . import state_machine
+import cProfile
+import pstats
 
 TIME_PER_UPDATE = 16.0 #Milliseconds
 
@@ -75,14 +77,24 @@ class Control(object):
         #Clock is used to tell you how long (in fractions of a second) it has been since the last update. 
         #If you multiply that time delta value by all of your speeds, those speeds become "movement per second" instead of "movement per frame". 
         #This also helps hide dramatic shifts in frame rates while the game is running (due to loading and whatnot).
-        lag = 0.0
-        while not self.done:
-            lag += self.clock.tick(self.fps)
-            self.event_loop()
-            while lag >= TIME_PER_UPDATE:
-                self.update()
-                lag -= TIME_PER_UPDATE
-            self.draw(lag/TIME_PER_UPDATE)
+
+        def test():
+            lag = 0.0
+            while not self.done:
+                lag += self.clock.tick(self.fps)
+                self.event_loop()
+                while lag >= TIME_PER_UPDATE:
+                    self.update()
+                    lag -= TIME_PER_UPDATE
+                self.draw(lag/TIME_PER_UPDATE)
+
+        with cProfile.Profile() as pr:
+            test()
+        #Runs when done
+        print("Finishing")
+        stats = pstats.Stats(pr)
+        stats.sort_stats(pstats.SortKey.TIME)
+        stats.print_stats()
 
 class Timer(object):
     """

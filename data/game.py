@@ -71,17 +71,17 @@ def game():
                     x = columnIndex * 64
                     y = rowIndex * 64
                     if column == '1':
-                        mainscreen.blit(pygame.transform.scale(prepare.dirtTexture, (64,64)), (x,y))                    
+                        mainscreen.blit(prepare.dirtTexture, (64,64)), (x,y)                  
                     elif column == '2':
-                        mainscreen.blit(pygame.transform.scale(prepare.goldStoneTexture, (64,64)), (x,y))
+                        mainscreen.blit(prepare.goldStoneTexture, (64,64)), (x,y)
                     elif column == '3':
-                        mainscreen.blit(pygame.transform.scale(prepare.grassTexture, (64,64)), (x,y))
+                        mainscreen.blit(prepare.grassTexture, (64,64)), (x,y)
                     elif column == '4':
-                        mainscreen.blit(pygame.transform.scale(prepare.sfaCubeTexture, (64,64)), (x,y))                    
+                        mainscreen.blit(prepare.sfaCubeTexture, (64,64)), (x,y)                 
                     elif column == '5':
-                        mainscreen.blit(pygame.transform.scale(prepare.stoneTexture, (64,64)), (x,y))
+                        mainscreen.blit(prepare.stoneTexture, (64,64)), (x,y)
                     elif column == '6':
-                        mainscreen.blit(pygame.transform.scale(prepare.brickBlockTexture, (64,64)), (x,y))
+                        mainscreen.blit(prepare.brickBlockTexture, (64,64)), (x,y)
 
     if prepare.inputMode == "keyboard":
         logging.writeLog("Starting keyboard mode")

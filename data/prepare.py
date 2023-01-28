@@ -27,17 +27,7 @@ NAVYBLUE = (0,0,153)
 VIOLET = (204,153,255)
 SKYBLUE = (28,92,140)
 
-#You can define some sprites or images here
-dirtTexture = pygame.image.load(os.path.join('resources','image','dirt_block.png'))
-grassTexture = pygame.image.load(os.path.join('resources','image','grass_block.png'))
-stoneTexture = pygame.image.load(os.path.join('resources','image','stone_block.png'))
-backGroundOne = pygame.image.load(os.path.join('resources','image','skybox_one.jpg'))
-goldStoneTexture = pygame.image.load(os.path.join('resources','image','gold_stone.png'))
-brickBlockTexture = pygame.image.load(os.path.join('resources','image','brick_block.png'))
-sfaCubeTexture = pygame.image.load(os.path.join('resources','image','sfa_cube.png'))
-SPLASH1 = pygame.image.load(os.path.join('resources','image','SFA_CS_SPLASH.png'))
-titlewords = pygame.image.load(os.path.join('resources','image','Titlename.png'))
-playerImage = pygame.transform.scale(pygame.image.load(os.path.join('resources','image','LumberjackMale.png')), (90,140))
+
 
 
 #maps
@@ -89,6 +79,9 @@ BACKGROUND_COLOR = PURPLE
 #creates screen with screen size.
 _screen = pygame.display.set_mode(SCREEN_SIZE)
 
+#creates game rectangle for speed
+
+
 #fill screen with background_color
 _screen.fill(BACKGROUND_COLOR)
 
@@ -104,3 +97,15 @@ DEFAULT_CONTROLS = {pygame.K_DOWN  : "down",
                     pygame.K_UP    : "up",
                     pygame.K_LEFT  : "left",
                     pygame.K_RIGHT : "right"}
+                    
+#You can define some sprites or images here
+dirtTexture = pygame.transform.scale(pygame.image.load(os.path.join('resources','image','dirt_block.png')).convert(), (64,64))
+grassTexture = pygame.transform.scale(pygame.image.load(os.path.join('resources','image','grass_block.png')).convert(), (64,64))
+stoneTexture = pygame.transform.scale(pygame.image.load(os.path.join('resources','image','stone_block.png')).convert(), (64,64))
+backGroundOne = pygame.transform.scale(pygame.image.load(os.path.join('resources','image','skybox_one.jpg')).convert(), (64,64))
+goldStoneTexture = pygame.transform.scale(pygame.image.load(os.path.join('resources','image','gold_stone.png')).convert(), (64,64))
+brickBlockTexture = pygame.transform.scale(pygame.image.load(os.path.join('resources','image','brick_block.png')).convert(), (64,64))
+sfaCubeTexture = pygame.transform.scale(pygame.image.load(os.path.join('resources','image','sfa_cube.png')).convert(), (64,64))
+SPLASH1 = pygame.image.load(os.path.join('resources','image','SFA_CS_SPLASH.png'))
+titlewords = pygame.image.load(os.path.join('resources','image','Titlename.png'))
+playerImage = pygame.transform.scale(pygame.image.load(os.path.join('resources','image','LumberjackMale.png')), (90,140))

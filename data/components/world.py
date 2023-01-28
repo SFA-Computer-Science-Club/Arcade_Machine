@@ -28,17 +28,18 @@ class WorldMap(object):
                     x = columnIndex * 64
                     y = rowIndex * 64
                     if column == '1':
-                        prepare._screen.blit(pg.transform.scale(prepare.dirtTexture, (64,64)), (x,y))                    
+                        prepare._screen.blit(prepare.dirtTexture, (x,y))    
+                        # prepare._screen.draw(prepare.dirtTexture, (x,y))               
                     elif column == '2':
-                        prepare._screen.blit(pg.transform.scale(prepare.goldStoneTexture, (64,64)), (x,y))
+                        prepare._screen.blit(prepare.goldStoneTexture, (x,y))
                     elif column == '3':
-                        prepare._screen.blit(pg.transform.scale(prepare.grassTexture, (64,64)), (x,y))
+                        prepare._screen.blit(prepare.grassTexture, (x,y))
                     elif column == '4':
-                        prepare._screen.blit(pg.transform.scale(prepare.sfaCubeTexture, (64,64)), (x,y))                    
+                        prepare._screen.blit(prepare.sfaCubeTexture, (x,y))           
                     elif column == '5':
-                        prepare._screen.blit(pg.transform.scale(prepare.stoneTexture, (64,64)), (x,y))
+                        prepare._screen.blit(prepare.stoneTexture, (x,y))
                     elif column == '6':
-                        prepare._screen.blit(pg.transform.scale(prepare.brickBlockTexture, (64,64)), (x,y))
+                        prepare._screen.blit(prepare.brickBlockTexture, (x,y))
     
     def update(self, now):
         self.load(self.name)
