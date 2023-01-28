@@ -15,6 +15,7 @@ class Player(object):
         self.direction = "right"
         self.direction_stack = []
 
+
     def add_direction(self, key):
         if key in self.controls:
             direction = self.controls[key]

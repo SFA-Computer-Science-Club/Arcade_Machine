@@ -25,25 +25,6 @@ NAVYBLUE = (0,0,153)
 VIOLET = (204,153,255)
 SKYBLUE = (28,92,140)
 
-#You can define some sprites or images here
-dirtTexture = pygame.image.load(os.path.join('resources','image','dirt_block.png'))
-grassTexture = pygame.image.load(os.path.join('resources','image','grass_block.png'))
-stoneTexture = pygame.image.load(os.path.join('resources','image','stone_block.png'))
-backGroundOne = pygame.image.load(os.path.join('resources','image','skybox_one.jpg'))
-goldStoneTexture = pygame.image.load(os.path.join('resources','image','gold_stone.png'))
-brickBlockTexture = pygame.image.load(os.path.join('resources','image','brick_block.png'))
-sfaCubeTexture = pygame.image.load(os.path.join('resources','image','sfa_cube.png'))
-SPLASH1 = pygame.image.load(os.path.join('resources','image','SFA_CS_SPLASH.png'))
-titlewords = pygame.image.load(os.path.join('resources','image','Titlename.png'))
-
-playerImage = pygame.image.load(os.path.join('resources','image','LumberjackMale.png'))
-
-#maps
-testMap = os.path.join('resources','map_data','TestMap.csv')
-testMap2 = os.path.join('resources','map_data','TestMap2.csv')
-testMap3 = os.path.join('resources','map_data','TestMap3.csv')
-testMap4 = os.path.join('resources','map_data','TestMap4.csv')
-
 #music
 mainTheme = os.path.join('resources','music','Platformer_Main_Menu_Song.mp3')
 
@@ -56,9 +37,6 @@ loaded = False
 
 #screen size for game
 SCREEN_SIZE = (1280, 1000)
-
-#tile dimension
-TILE_DIMENSION = (64,64)
 
 #name of game
 ORIGINAL_CAPTION = "SFA Platformer 0.1a"
@@ -93,14 +71,38 @@ _screen = pygame.display.set_mode(SCREEN_SIZE)
 #fill screen with background_color
 _screen.fill(BACKGROUND_COLOR)
 
-_render = SMALL_FONT.render("CS students are slacking, please wait warmly~~", 0, pygame.Color("white"))
-_screen.blit(_render, _render.get_rect(center=SCREEN_RECT.center))
-pygame.display.update()
-pygame.time.wait(1000)
-
-
-
 #The default controls for the game. CHANGE FOR JOYSTICK?
 DEFAULT_CONTROLS = {pygame.K_DOWN  : "down",
                     pygame.K_LEFT  : "left",
                     pygame.K_RIGHT : "right"}
+
+#Tile dimensions
+TILE_DIMENSION = (64,64)
+x = 64
+y = 64
+
+#maps
+testMap = os.path.join('resources','map_data','TestMap.csv')
+testMap2 = os.path.join('resources','map_data','TestMap2.csv')
+testMap3 = os.path.join('resources','map_data','TestMap3.csv')
+testMap4 = os.path.join('resources','map_data','TestMap4.csv')
+
+
+#You can define some sprites or images here
+dirtTexture = pygame.transform.scale(pygame.image.load(os.path.join('resources','image','dirt_block.png')).convert(), TILE_DIMENSION)
+grassTexture = pygame.transform.scale(pygame.image.load(os.path.join('resources','image','grass_block.png')).convert(), TILE_DIMENSION)
+stoneTexture = pygame.transform.scale(pygame.image.load(os.path.join('resources','image','stone_block.png')).convert(), TILE_DIMENSION)
+backGroundOne = pygame.transform.scale(pygame.image.load(os.path.join('resources','image','skybox_one.jpg')).convert(), (1280,1280))
+goldStoneTexture = pygame.transform.scale(pygame.image.load(os.path.join('resources','image','gold_stone.png')).convert(), TILE_DIMENSION)
+brickBlockTexture = pygame.transform.scale(pygame.image.load(os.path.join('resources','image','brick_block.png')).convert(), TILE_DIMENSION)
+sfaCubeTexture = pygame.transform.scale(pygame.image.load(os.path.join('resources','image','sfa_cube.png')).convert(), TILE_DIMENSION)
+SPLASH1 = pygame.image.load(os.path.join('resources','image','SFA_CS_SPLASH.png'))
+titlewords = pygame.image.load(os.path.join('resources','image','Titlename.png'))
+playerImage = pygame.transform.scale(pygame.image.load(os.path.join('resources','image','LumberjackMale.png')), TILE_DIMENSION)
+
+
+#preload screen
+_render = SMALL_FONT.render("CS students are slacking, please wait warmly~~", 0, pygame.Color("white"))
+_screen.blit(_render, _render.get_rect(center=SCREEN_RECT.center))
+pygame.display.update()
+pygame.time.wait(1000)

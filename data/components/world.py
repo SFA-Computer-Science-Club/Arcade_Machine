@@ -16,7 +16,7 @@ class WorldMap(object):
             self.loaded = True
             #do some initial things
             logging.writeLog(f" {world_name}: loading for first time")
-        prepare._screen.blit(pg.transform.scale(prepare.backGroundOne, prepare.SCREEN_SIZE), (0,0))  
+        prepare._screen.blit(prepare.backGroundOne, (0,0))  
        
         # open file in read mode
         with open(world_name, 'r') as read_obj:
@@ -28,17 +28,17 @@ class WorldMap(object):
                     x = columnIndex * prepare.TILE_DIMENSION[0]
                     y = rowIndex * prepare.TILE_DIMENSION[1]
                     if column == '1':
-                        prepare._screen.blit(pg.transform.scale(prepare.dirtTexture, prepare.TILE_DIMENSION), (x,y))
+                        prepare._screen.blit(prepare.dirtTexture, (x,y))
                     elif column == '2':
-                        prepare._screen.blit(pg.transform.scale(prepare.goldStoneTexture, prepare.TILE_DIMENSION), (x,y))
+                        prepare._screen.blit(prepare.goldStoneTexture, (x,y))
                     elif column == '3':
-                        prepare._screen.blit(pg.transform.scale(prepare.grassTexture, prepare.TILE_DIMENSION), (x,y))
+                        prepare._screen.blit(prepare.grassTexture, (x,y))
                     elif column == '4':
-                        prepare._screen.blit(pg.transform.scale(prepare.sfaCubeTexture, prepare.TILE_DIMENSION), (x,y))                    
+                        prepare._screen.blit(prepare.sfaCubeTexture, (x,y))                    
                     elif column == '5':
-                        prepare._screen.blit(pg.transform.scale(prepare.stoneTexture, prepare.TILE_DIMENSION), (x,y))
+                        prepare._screen.blit(prepare.stoneTexture, (x,y))
                     elif column == '6':
-                        prepare._screen.blit(pg.transform.scale(prepare.brickBlockTexture, prepare.TILE_DIMENSION), (x,y))
+                        prepare._screen.blit(prepare.brickBlockTexture, (x,y))
     
     def update(self, now):
         self.load(self.name)
