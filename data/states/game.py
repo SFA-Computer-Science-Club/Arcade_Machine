@@ -24,7 +24,8 @@ class Game(state_machine._State):
             self.world = world.WorldMap()
     
     def get_event(self, event):
-        pass
+        if event.type == pg.JOYAXISMOTION:
+            self.player.move(event)
         # if event.type == pg.KEYDOWN:
         #     self.player.move(event)
 

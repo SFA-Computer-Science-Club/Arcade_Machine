@@ -104,3 +104,7 @@ DEFAULT_CONTROLS = {pygame.K_DOWN  : "down",
                     pygame.K_UP    : "up",
                     pygame.K_LEFT  : "left",
                     pygame.K_RIGHT : "right"}
+
+# joysticks
+pygame.joystick.init()
+joysticks = [pygame.joystick.Joystick(joystick) for joystick in range(pygame.joystick.get_count())]

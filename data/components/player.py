@@ -1,6 +1,7 @@
 from .. import prepare
 import pygame as pg
 
+
 class Player(object):
     def __init__(self):
         self.image = prepare.playerImage
@@ -14,24 +15,10 @@ class Player(object):
         self.direction = None
 
     def move(self, event):
-        if event[pg.K_d]:
-            self.x += 1 * self.speed
-        if event[pg.K_a]:
-            self.x -= 1 * self.speed
-        if event[pg.K_s]:
-            self.y += 1 * self.speed
-        if event[pg.K_w]:
-            self.y -= 1 * self.speed
-
-        # if event.type == pg.KEYUP:
-        #     self.direction = None
-        # elif event.type == pg.KEYDOWN:
-        #     self.direction = "right"
-        # if event.type == pg.K_RIGHT:
-        #     self.x += 1
-        #     self.draw()
-        # elif event.type == pg.K_LEFT:
-        #     self.x -= 1
+        if prepare.joysticks[0].get_axis(0) > .9:
+            self.x += 10
+        elif prepare.joysticks[0].get_axis(0) == -1:
+            self.x -= 10
         
     def update(self):
         pass
