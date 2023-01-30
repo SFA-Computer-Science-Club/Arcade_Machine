@@ -4,6 +4,7 @@ Also contained are various constants used throughout the program.
 """
 import os
 import pygame
+import csv
 
 from data.components import player
 
@@ -35,6 +36,21 @@ testMap = os.path.join('resources','map_data','TestMap.csv')
 testMap2 = os.path.join('resources','map_data','TestMap2.csv')
 testMap3 = os.path.join('resources','map_data','TestMap3.csv')
 testMap4 = os.path.join('resources','map_data','TestMap4.csv')
+
+
+#map table
+
+mapOneTable = []
+
+with open(testMap, 'r') as read_obj:
+    csv_reader = csv.reader(read_obj)
+    for rowIndex, row in enumerate(csv_reader):
+        currentRowTable = []
+        for columnIndex, column in enumerate(row):
+                currentRowTable.append(column)
+        mapOneTable.append(currentRowTable)
+
+
 
 #music
 mainTheme = os.path.join('resources','music','Platformer_Main_Menu_Song.mp3')
@@ -102,10 +118,10 @@ DEFAULT_CONTROLS = {pygame.K_DOWN  : "down",
 dirtTexture = pygame.transform.scale(pygame.image.load(os.path.join('resources','image','dirt_block.png')).convert(), (64,64))
 grassTexture = pygame.transform.scale(pygame.image.load(os.path.join('resources','image','grass_block.png')).convert(), (64,64))
 stoneTexture = pygame.transform.scale(pygame.image.load(os.path.join('resources','image','stone_block.png')).convert(), (64,64))
-backGroundOne = pygame.transform.scale(pygame.image.load(os.path.join('resources','image','skybox_one.jpg')).convert(), (64,64))
+backGroundOne = pygame.transform.scale(pygame.image.load(os.path.join('resources','image','skybox_one.jpg')).convert(), SCREEN_SIZE)
 goldStoneTexture = pygame.transform.scale(pygame.image.load(os.path.join('resources','image','gold_stone.png')).convert(), (64,64))
 brickBlockTexture = pygame.transform.scale(pygame.image.load(os.path.join('resources','image','brick_block.png')).convert(), (64,64))
 sfaCubeTexture = pygame.transform.scale(pygame.image.load(os.path.join('resources','image','sfa_cube.png')).convert(), (64,64))
 SPLASH1 = pygame.image.load(os.path.join('resources','image','SFA_CS_SPLASH.png'))
 titlewords = pygame.image.load(os.path.join('resources','image','Titlename.png'))
-playerImage = pygame.transform.scale(pygame.image.load(os.path.join('resources','image','LumberjackMale.png')), (90,140))
+playerImage = pygame.transform.scale(pygame.image.load(os.path.join('resources','image','LumberjackMale.png')).convert_alpha(), (90,140))

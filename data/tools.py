@@ -87,14 +87,13 @@ class Control(object):
                     self.update()
                     lag -= TIME_PER_UPDATE
                 self.draw(lag/TIME_PER_UPDATE)
-
-        with cProfile.Profile() as pr:
-            test()
+        test()
+        # with cProfile.Profile() as pr:
+        #     test()
         #Runs when done
-        print("Finishing")
-        stats = pstats.Stats(pr)
-        stats.sort_stats(pstats.SortKey.TIME)
-        stats.print_stats()
+        # stats = pstats.Stats(pr)
+        # stats.sort_stats(pstats.SortKey.TIME)
+        # stats.print_stats()
 
 class Timer(object):
     """

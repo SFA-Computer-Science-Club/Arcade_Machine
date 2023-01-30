@@ -59,7 +59,7 @@ def game():
             #mapLevel = 
         
         #mainscreen.fill(levelOneMap.skyColor)
-        mainscreen.blit(pygame.transform.scale(prepare.backGroundOne, prepare.SCREEN_SIZE), (0,0))  
+        mainscreen.blit(prepare.backGroundOne, prepare.SCREEN_SIZE)  
        
         # open file in read mode
         with open(prepare.testMap2, 'r') as read_obj:
