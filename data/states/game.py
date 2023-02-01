@@ -27,12 +27,10 @@ class Game(state_machine._State):
     def get_event(self, event):
 
         if event.type == pg.KEYDOWN:
-            print("add")
             self.player.add_direction(event.key)
             if event.key == pg.K_UP:
                 self.player.jump()
         elif event.type == pg.KEYUP:
-            print("pop")
             self.player.pop_direction(event.key)
 
     def update(self, keys, now):
