@@ -37,18 +37,12 @@ testMap2 = os.path.join('resources','map_data','TestMap2.csv')
 testMap3 = os.path.join('resources','map_data','TestMap3.csv')
 testMap4 = os.path.join('resources','map_data','TestMap4.csv')
 
+#screen size for game
+SCREEN_SIZE = (1280, 1024)
 
-#map table
+#creates screen with screen size.
+_screen = pygame.display.set_mode(SCREEN_SIZE)
 
-mapOneTable = []
-
-with open(testMap, 'r') as read_obj:
-    csv_reader = csv.reader(read_obj)
-    for rowIndex, row in enumerate(csv_reader):
-        currentRowTable = []
-        for columnIndex, column in enumerate(row):
-                currentRowTable.append(column)
-        mapOneTable.append(currentRowTable)
 
 
 
@@ -62,8 +56,6 @@ inputMode = "keyboard" #Change to joystick for PRODUCTION
 chosenMode = "none"
 loaded = False
 
-#screen size for game
-SCREEN_SIZE = (1280, 1024)
 
 #name of game
 ORIGINAL_CAPTION = "SFA Platformer 0.1a"
@@ -125,3 +117,36 @@ sfaCubeTexture = pygame.transform.scale(pygame.image.load(os.path.join('resource
 SPLASH1 = pygame.image.load(os.path.join('resources','image','SFA_CS_SPLASH.png'))
 titlewords = pygame.image.load(os.path.join('resources','image','Titlename.png'))
 playerImage = pygame.transform.scale(pygame.image.load(os.path.join('resources','image','LumberjackMale.png')).convert_alpha(), (90,140))
+
+
+# map table
+
+mapOneTable = []
+mapOneRectTable = []
+
+with open(testMap, 'r') as read_obj:
+    csv_reader = csv.reader(read_obj)
+    for rowIndex, row in enumerate(csv_reader):
+        currentRowTable = []
+        for columnIndex, column in enumerate(row):
+                if column == '-1':
+                    currentRowTable.append(-1)
+                elif column == '1':
+                    currentRowTable.append(dirtTexture)
+                    mapOneRectTable.append(dirtTexture.get_rect())   
+                elif column == '2':
+                    currentRowTable.append(goldStoneTexture)
+                    mapOneRectTable.append(goldStoneTexture.get_rect())   
+                elif column == '3':
+                    currentRowTable.append(grassTexture)
+                    mapOneRectTable.append(grassTexture.get_rect())
+                elif column == '4':
+                    currentRowTable.append(sfaCubeTexture)
+                    mapOneRectTable.append(sfaCubeTexture.get_rect())          
+                elif column == '5':
+                    currentRowTable.append(stoneTexture)
+                    mapOneRectTable.append(stoneTexture.get_rect())
+                elif column == '6':
+                    currentRowTable.append(brickBlockTexture)
+                    mapOneRectTable.append(brickBlockTexture.get_rect())
+        mapOneTable.append(currentRowTable)

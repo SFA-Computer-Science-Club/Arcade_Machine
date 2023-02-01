@@ -14,10 +14,10 @@ class WorldMap(object):
         """Load world given a world_name."""
         if self.loaded == False:
             self.loaded = True
-            #do some initial things
+            # do some initial things
             logging.writeLog(f" {world_name}: loading for first time")
         prepare._screen.blit(prepare.backGroundOne, (0,0))         
-        #prepare._screen.blit(pg.transform.scale(prepare.backGroundOne, prepare.SCREEN_SIZE), (0,0))  
+        # prepare._screen.blit(pg.transform.scale(prepare.backGroundOne, prepare.SCREEN_SIZE), (0,0))  
 
         # pass the file object to reader() to get the reader object
         # Iterate over each row in the csv using reader object
@@ -25,26 +25,24 @@ class WorldMap(object):
             for columnIndex, column in enumerate(row):
                 x = columnIndex * 64
                 y = rowIndex * 64
-                if column == '-1':
+                if prepare.mapOneTable[rowIndex][columnIndex] == -1:
                     continue
-                elif column == '1':
-                    # pg.draw.rect(drawSurf, prepare.WHITE, (x,y, 64,64))
-
-                    prepare._screen.blit(prepare.dirtTexture, (x,y))    
-                    # prepare._screen.draw(prepare.dirtTexture, (x,y))               
-                elif column == '2':
-                    prepare._screen.blit(prepare.goldStoneTexture, (x,y))
-                elif column == '3':
-                    prepare._screen.blit(prepare.grassTexture, (x,y))
-                elif column == '4':
-                    prepare._screen.blit(prepare.sfaCubeTexture, (x,y))           
-                elif column == '5':
-                    prepare._screen.blit(prepare.stoneTexture, (x,y))
-                elif column == '6':
-                    prepare._screen.blit(prepare.brickBlockTexture, (x,y))
+                else:
+                    # this means that it isn't an air block so just put what value it is in the array
+                    prepare._screen.blit(prepare.mapOneTable[rowIndex][columnIndex], (x,y))
     
-    def update(self, now):
+    def update(self, now, player):
         self.load(self.name)
+        self.collision(player)
 
     def draw(self, surface, interpolate):
         self.load(self.name)
+
+    def collision(self, player):
+        for rowIndex, row in enumerate(prepare.mapOneRectTable):
+            for columnIndex, column in enumerate(row):
+                x = columnIndex * 64
+                y = rowIndex * 64
+                
+                # Check if player's current coordinates are inside of each rect in mapOneRectTable\
+                # if prepare.mapOneRectTable[rowIndex][columnIndex]:

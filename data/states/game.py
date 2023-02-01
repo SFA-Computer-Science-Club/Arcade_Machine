@@ -34,7 +34,7 @@ class Game(state_machine._State):
 
     def update(self, keys, now):
         self.now = now
-        self.world.update(now)
+        self.world.update(now, self.player)
         self.player.update()
 
     def draw(self, surface, interpolate):
