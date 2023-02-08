@@ -129,24 +129,26 @@ with open(testMap, 'r') as read_obj:
     for rowIndex, row in enumerate(csv_reader):
         currentRowTable = []
         for columnIndex, column in enumerate(row):
+                x = columnIndex * 64
+                y = rowIndex * 64
                 if column == '-1':
                     currentRowTable.append(-1)
                 elif column == '1':
                     currentRowTable.append(dirtTexture)
-                    mapOneRectTable.append(dirtTexture.get_rect())   
+                    mapOneRectTable.append(dirtTexture.get_rect().move(x,y))   
                 elif column == '2':
                     currentRowTable.append(goldStoneTexture)
-                    mapOneRectTable.append(goldStoneTexture.get_rect())   
+                    mapOneRectTable.append(goldStoneTexture.get_rect().move(x,y))   
                 elif column == '3':
                     currentRowTable.append(grassTexture)
-                    mapOneRectTable.append(grassTexture.get_rect())
+                    mapOneRectTable.append(grassTexture.get_rect().move(x,y))
                 elif column == '4':
                     currentRowTable.append(sfaCubeTexture)
-                    mapOneRectTable.append(sfaCubeTexture.get_rect())          
+                    mapOneRectTable.append(sfaCubeTexture.get_rect().move(x,y))        
                 elif column == '5':
                     currentRowTable.append(stoneTexture)
-                    mapOneRectTable.append(stoneTexture.get_rect())
+                    mapOneRectTable.append(stoneTexture.get_rect().move(x,y))
                 elif column == '6':
                     currentRowTable.append(brickBlockTexture)
-                    mapOneRectTable.append(brickBlockTexture.get_rect())
+                    mapOneRectTable.append(brickBlockTexture.get_rect().move(x,y))
         mapOneTable.append(currentRowTable)

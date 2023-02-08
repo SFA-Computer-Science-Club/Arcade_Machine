@@ -39,10 +39,15 @@ class WorldMap(object):
         self.load(self.name)
 
     def collision(self, player):
+        didCollide = False
         for rowIndex, row in enumerate(prepare.mapOneRectTable):
-            for columnIndex, column in enumerate(row):
-                x = columnIndex * 64
-                y = rowIndex * 64
+            
+            # Check if player's current coordinates are inside of each rect in mapOneRectTable\
+            rectObject = prepare.mapOneRectTable[rowIndex]
+            if player.rect.colliderect(rectObject):
                 
-                # Check if player's current coordinates are inside of each rect in mapOneRectTable\
-                # if prepare.mapOneRectTable[rowIndex][columnIndex]:
+                player.collide(rectObject)
+                
+                didCollide = True
+        if (didCollide == False):
+            player.collided = False
