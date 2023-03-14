@@ -21,27 +21,14 @@ class WorldMap(object):
 
         # pass the file object to reader() to get the reader object
         # Iterate over each row in the csv using reader object
-        for rowIndex, row in enumerate(prepare.mapOneTable):
-            for columnIndex, column in enumerate(row):
-                x = columnIndex * 64
-                y = rowIndex * 64
-                if column == '-1':
+        for row in prepare.level_one_tiles:
+            for tile in row:
+                # TEMP FIX: no tile should be empty, however, some are 
+                # getting past my filter in prepare.py. Need to fix and
+                # remove this if statement.
+                if len(tile) == 0:
                     continue
-                elif column == '1':
-                    # pg.draw.rect(drawSurf, prepare.WHITE, (x,y, 64,64))
-
-                    prepare._screen.blit(prepare.dirtTexture, (x,y))    
-                    # prepare._screen.draw(prepare.dirtTexture, (x,y))               
-                elif column == '2':
-                    prepare._screen.blit(prepare.goldStoneTexture, (x,y))
-                elif column == '3':
-                    prepare._screen.blit(prepare.grassTexture, (x,y))
-                elif column == '4':
-                    prepare._screen.blit(prepare.sfaCubeTexture, (x,y))           
-                elif column == '5':
-                    prepare._screen.blit(prepare.stoneTexture, (x,y))
-                elif column == '6':
-                    prepare._screen.blit(prepare.brickBlockTexture, (x,y))
+                prepare._screen.blit(tile[0], tile[1])         
     
     def update(self, now):
         self.load(self.name)

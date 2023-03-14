@@ -2,17 +2,20 @@ from .. import prepare
 import pygame as pg
 
 class Player(object):
-    def __init__(self):
+    def __init__(self, x, y):
         self.image = prepare.playerImage
+        self.rect = self.image.get_rect()
         self.health = 100
         self.speed = 4
         self.verticalVelocity = 0
-        self.x = 100
-        self.y = 200
+        self.rect.x = x
+        self.rect.y = y
         self.score = 0
         self.jumpPower = 5
         self.state = 0
         self.direction = None
+        self.width = self.image.get_width()
+        self.height = self.image.get_height()
 
     def jump(self):
         if self.verticalVelocity < 0:
@@ -41,6 +44,11 @@ class Player(object):
             self.verticalVelocity = 0
 
     def update(self):
+        for row in prepare.level_one_tiles:
+            for tile in row:
+                if tile[1].colliderect(self.rect.x, self.rect.y + self.verticalVelocity, self.width, self.height):
+                    self.y += 0
+                    
         self.applyGravity()
         self.y += self.verticalVelocity
 

@@ -12,7 +12,7 @@ class Game(state_machine._State):
         state_machine._State.__init__(self)
         self.world = None
         self.reset_map = True
-        self.player = player.Player()
+        self.player = player.Player(100, 200)
 
     def startup(self, now, persistant):
         """
