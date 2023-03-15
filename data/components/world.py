@@ -13,7 +13,7 @@ class WorldMap(object):
 
         #Create all of the objects
         self.mapOneObjTable = []
-
+        id = 0
         with open(prepare.testMap, 'r') as read_obj:
             csv_reader = prepare.csv.reader(read_obj)
             for rowIndex, row in enumerate(csv_reader):
@@ -21,23 +21,24 @@ class WorldMap(object):
                         x = columnIndex * 64
                         y = rowIndex * 64
                         if column == '1':
-                            dirtBlock = block.Block(x,y,"dirt_block",prepare.dirtTexture,prepare.dirtTexture.get_rect().move(x,y))
+                            dirtBlock = block.Block(x,y,"dirt_block",prepare.dirtTexture,prepare.dirtTexture.get_rect().move(x,y), id)
                             self.mapOneObjTable.append(dirtBlock)
                         elif column == '2':
-                            goldStoneBlock = block.Block(x,y,"gold_stone_block",prepare.goldStoneTexture,prepare.goldStoneTexture.get_rect().move(x,y))
+                            goldStoneBlock = block.Block(x,y,"gold_stone_block",prepare.goldStoneTexture,prepare.goldStoneTexture.get_rect().move(x,y), id)
                             self.mapOneObjTable.append(goldStoneBlock)
                         elif column == '3':
-                            grassBlock = block.Block(x,y,"grass_block",prepare.grassTexture,prepare.grassTexture.get_rect().move(x,y))
+                            grassBlock = block.Block(x,y,"grass_block",prepare.grassTexture,prepare.grassTexture.get_rect().move(x,y), id)
                             self.mapOneObjTable.append(grassBlock)
                         elif column == '4':
-                            sfaBlock = block.Block(x,y,"sfa_block",prepare.sfaCubeTexture,prepare.sfaCubeTexture.get_rect().move(x,y))
+                            sfaBlock = block.Block(x,y,"sfa_block",prepare.sfaCubeTexture,prepare.sfaCubeTexture.get_rect().move(x,y), id)
                             self.mapOneObjTable.append(sfaBlock)     
                         elif column == '5':
-                            stoneBlock = block.Block(x,y,"stone_block",prepare.stoneTexture,prepare.stoneTexture.get_rect().move(x,y))
+                            stoneBlock = block.Block(x,y,"stone_block",prepare.stoneTexture,prepare.stoneTexture.get_rect().move(x,y), id)
                             self.mapOneObjTable.append(stoneBlock)
                         elif column == '6':
-                            brickBlock = block.Block(x,y,"brick_block",prepare.brickBlockTexture,prepare.brickBlockTexture.get_rect().move(x,y))
+                            brickBlock = block.Block(x,y,"brick_block",prepare.brickBlockTexture,prepare.brickBlockTexture.get_rect().move(x,y), id)
                             self.mapOneObjTable.append(brickBlock)
+                        id += 1
 
     def load(self, world_name):
         """Load world given a world_name."""
@@ -55,20 +56,6 @@ class WorldMap(object):
     
     def update(self, now, player):
         self.load(self.name)
-        self.collision(player)
 
     def draw(self, surface, interpolate):
         self.load(self.name)
-
-    def collision(self, player):
-        didCollide = False
-        for object in self.mapOneObjTable:
-            
-            # Check if player's current coordinates are inside of each rect in mapOneRectTable\
-            if player.rect.colliderect(object.rect):
-                
-                player.collide(object.rect)
-                
-                didCollide = True
-        if (didCollide == False):
-            player.collided = False
