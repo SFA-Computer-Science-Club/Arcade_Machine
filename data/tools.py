@@ -123,3 +123,6 @@ class Timer(object):
                 self.done = True
             return True
 # add tools for animations, sprites, loading/parsing resources, collision.
+
+class _SpriteTemplate(pg.sprite.Sprite):
+    pass

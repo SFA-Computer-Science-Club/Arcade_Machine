@@ -1,10 +1,12 @@
 from .. import prepare
 import pygame as pg
+from  ..components import world, collision
 
 class Player(object):
     def __init__(self):
         self.image = prepare.playerImage
         self.health = 100
+        self.collider = collision.Collision()
         self.speed = 1
         self.verticalVelocity = 0
         self.horizontalVelocity = 0
@@ -70,14 +72,45 @@ class Player(object):
         self.applyGravity()
 
         #after this point we have calculated all of our movement vectors, delta y and delta x
-        self.x += self.horizontalVelocity
-        
-        
+        newRect = self.rect.move(self.x,self.y)
+        newRect.move(self.x + self.horizontalVelocity, self.y)
+        collided = self.collider.getCollidingObjects(newRect, world.WorldMap.mapOneObjTable)
+
+        if collided == False:
+            #nothing happened
+            #self.rect.move(self.x+self.horizontalVelocity,self.y)
+            self.x += self.horizontalVelocity
+        else:
+            #it did collide on x axis do things
+            centerPlayer = self.rect.centerx
+            if (len(collided) == 1):
+                world.WorldMap.mapOneFakeTable.append(collided[0])
+                collidedObject = collided[0]
+                print("collided with " , collidedObject.name , " at position x,y " , collidedObject.rect.x , "," , collidedObject.rect.y)
+                centerObject = collidedObject.rect.centerx
+                if (centerPlayer - centerObject > 0):
+                    #player is to the right of the collided object
+                    overLapX = self.rect.left - collidedObject.rect.right
+                    #self.rect.move(self.x + self.horizontalVelocity + overLapX, self.y)
+                    self.x += self.horizontalVelocity + overLapX
+                    print('player right of object')
+                else:
+                    #player is to the left of the collided object
+                    overLapX = self.rect.right - collidedObject.rect.left
+                    #self.rect.move(self.x + self.horizontalVelocity - overLapX, self.y)
+                    self.x += self.horizontalVelocity - overLapX
+            else:
+                pass
+            
 
         #after we resolved x collision, apply y collision
         self.y += self.verticalVelocity
+        self.rect.x = self.x
+        self.rect.y = self.y
 
     def draw(self, surface):
         if self.collided:
             pg.draw.rect(surface, prepare.RED, self.rect, 2)
+        pg.draw.rect(surface, prepare.RED, self.rect, 2)
+        #pg.draw.rect(surface, prepare.GREEN, (576,576,64,64),2)
         surface.blit(self.image, (self.x, self.y))

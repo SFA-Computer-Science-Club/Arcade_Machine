@@ -2,7 +2,7 @@
 SFA platformer game starter.
 """
 
-import sys
+import sys 
 import pygame as pg
 from data.main import main
 

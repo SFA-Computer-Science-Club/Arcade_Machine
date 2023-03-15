@@ -6,13 +6,14 @@ from .. import prepare, tools, logging
 from . import block
 
 class WorldMap(object):
+    mapOneObjTable = []
+    mapOneFakeTable = []
     def __init__(self):
         self.name = prepare.testMap2
         self.loaded = prepare.loaded
         self.scrolling = False
 
         #Create all of the objects
-        self.mapOneObjTable = []
         id = 0
         with open(prepare.testMap, 'r') as read_obj:
             csv_reader = prepare.csv.reader(read_obj)
@@ -31,6 +32,9 @@ class WorldMap(object):
                             self.mapOneObjTable.append(grassBlock)
                         elif column == '4':
                             sfaBlock = block.Block(x,y,"sfa_block",prepare.sfaCubeTexture,prepare.sfaCubeTexture.get_rect().move(x,y), id)
+                            sfaBlock.rect.x = x
+                            print("x: ", x," y:",y)
+                            sfaBlock.rect.y = y
                             self.mapOneObjTable.append(sfaBlock)     
                         elif column == '5':
                             stoneBlock = block.Block(x,y,"stone_block",prepare.stoneTexture,prepare.stoneTexture.get_rect().move(x,y), id)
@@ -40,6 +44,7 @@ class WorldMap(object):
                             self.mapOneObjTable.append(brickBlock)
                         id += 1
 
+    
     def load(self, world_name):
         """Load world given a world_name."""
         if self.loaded == False:
@@ -59,3 +64,6 @@ class WorldMap(object):
 
     def draw(self, surface, interpolate):
         self.load(self.name)
+        pg.draw.rect(surface, prepare.RED, self.mapOneObjTable[0].rect, 2)
+        for object in self.mapOneFakeTable:
+            pg.draw.rect(surface, prepare.PURPLE, object.rect, 2)
