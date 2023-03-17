@@ -9,8 +9,7 @@ class Collision:
         for object in objectTable:
             # Check if player's current coordinates are inside of each rect in mapOneRectTable\
             if objectToTest.colliderect(object):      
-                collidingObjects.append(object)
-                
+                collidingObjects.append(object)    
         if len(collidingObjects) > 0:
             #not empty, we did collide with something
             return collidingObjects
