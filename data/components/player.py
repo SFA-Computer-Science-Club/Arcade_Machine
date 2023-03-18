@@ -1,6 +1,7 @@
 from .. import prepare
 import pygame as pg
 from  ..components import world, collision
+import math
 
 class Player(object):
     def __init__(self):
@@ -75,63 +76,60 @@ class Player(object):
 
         #after this point we have calculated all of our movement vectors, delta y and delta x
 
-                #after we resolved x collision, apply y collision
-
         newRect = self.rect
         newRect.y += self.verticalVelocity
-        newRect.x = self.x
-        collided = self.collider.getCollidingObjects(newRect, world.WorldMap.mapOneObjTable)
-
-        if (collided == False):
+        ccollided = self.collider.getCollidingObjects(newRect, world.WorldMap.mapOneObjTable)
+        if (ccollided == False):
             #we can assume it isnt colliding on x axis, and that anything colliding will be on the y axis
             self.y += self.verticalVelocity
-        elif (self.verticalVelocity != 0):
-            if (len(collided) == 1):
+            self.collided = False
+        else:
+            if (len(ccollided) == 1):
                 #only one collided object
-                collidedObject = collided[0]
+                collidedObject = ccollided[0]
                 centerPlayer = newRect.centery
                 centerObject = collidedObject.rect.centery
+                self.collided = True
 
-                if (centerPlayer - centerObject > 0):
+                if (centerPlayer - centerObject >= 0):
                     #player is below
-                    overLapY = newRect.top - collidedObject.rect.bottom
-                    self.y += self.verticalVelocity - overLapY
+                    self.rect.top = collidedObject.rect.bottom
+                    self.verticalVelocity = 0
+                    self.y = self.rect.y
                 else:
                     #player is ontop
-                    overLapY = newRect.bottom - collidedObject.rect.top
-                    self.y += self.verticalVelocity - overLapY 
-            self.verticalVelocity = 0
+                    self.rect.bottom = collidedObject.rect.top
+                    self.verticalVelocity = 0
+                    self.y = self.rect.y
 
         newRect = self.rect
-        newRect.x += self.horizontalVelocity   
-        newRect.y = self.y 
-        collided = self.collider.getCollidingObjects(newRect, world.WorldMap.mapOneObjTable)
-
-        if collided == False:
+        newRect.x += self.horizontalVelocity 
+        ccollided = self.collider.getCollidingObjects(newRect, world.WorldMap.mapOneObjTable)
+        if ccollided == False:
             #nothing happened
             #self.rect.move(self.x+self.horizontalVelocity,self.y)
             self.x += self.horizontalVelocity
-            self.collided = False
-        elif (self.horizontalVelocity != 0):
+            if (self.collided != True):
+                self.collided = False
+        else:
             self.collided = True
             #it did collide on x axis do things
             centerPlayer = newRect.centerx
-            if (len(collided) == 1):
-                collidedObject = collided[0]
+            if (len(ccollided) == 1):
+                collidedObject = ccollided[0]
                 centerObject = collidedObject.rect.centerx
-                if ((centerPlayer - centerObject) > 0):
+                if ((centerPlayer - centerObject) >= 0):
                     #player is to the right of the collided object
-                    overLapX = newRect.left - collidedObject.rect.right
-                    #self.rect.move(self.x + self.horizontalVelocity + overLapX, self.y)
-                    self.x += self.horizontalVelocity - overLapX
+                    self.rect.left = collidedObject.rect.right
+                    self.horizontalVelocity = 0
+                    self.x = self.rect.x
                 else:
                     #player is to the left of the collided object
-                    overLapX = newRect.right - collidedObject.rect.left
-                    #self.rect.move(self.x + self.horizontalVelocity - overLapX, self.y)
-                    self.x += self.horizontalVelocity - overLapX
+                    self.rect.right = collidedObject.rect.left
+                    self.horizontalVelocity = 0
+                    self.x = self.rect.x
             else:
                 pass
-            self.horizontalVelocity = 0
         
         self.rect.x = self.x
         self.rect.y = self.y
