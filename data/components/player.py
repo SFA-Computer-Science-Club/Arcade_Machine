@@ -1,23 +1,33 @@
-from .. import prepare
+from .. import prepare, tools
 import pygame as pg
 from  ..components import world, collision
 import math
 
-class Player(object):
-    def __init__(self):
+SPEED = 1
+JUMP_POWER = 5
+
+class Player(tools._SpriteTemplate):
+    """A class for the player"""
+    def __init__(self, *groups):
+        tools._SpriteTemplate.__init__(self, (0,0), prepare.PLAYER_SIZE, *groups)
+        self.controls = prepare.DEFAULT_CONTROLS
         self.image = prepare.playerImage
-        self.health = 100
         self.collider = collision.Collision()
-        self.speed = 1
+
+        self.reset()
+
+    def reset(self):
+        """
+        reset all variables for a fresh player.
+        """
+        pos = (100, 50)
+        self.reset_position(pos)
         self.verticalVelocity = 0
         self.horizontalVelocity = 0
-        self.x = 100
-        self.y = 50
-        self.rect = prepare.playerImage.get_rect().move(self.x,self.y)
-        self.score = 0
-        self.jumpPower = 5
-        self.state = 0
         self.direction = None
+        self.score = 0
+        self.state = 0
+        self.health = 100
         self.collided = False
         self.canJump = True
         self.grounded = False
@@ -27,7 +37,7 @@ class Player(object):
     def jump(self):
         if self.verticalVelocity < 0:
             self.verticalVelocity = 0
-        self.verticalVelocity -= self.jumpPower
+        self.verticalVelocity -= JUMP_POWER
 
     def applyGravity(self):
         self.verticalVelocity += 0.15
@@ -41,8 +51,6 @@ class Player(object):
         else:
             self.horizontalVelocity = 0
 
-    def move(self, event):
-        pass
 
     def update(self):
         #Goal is to increment our vertical, and horizontal velocity
@@ -52,7 +60,7 @@ class Player(object):
             if self.horizontalVelocity > 3:
                 self.horizontalVelocity = 3
             else:
-                self.horizontalVelocity += 0.15 * self.speed
+                self.horizontalVelocity += 0.15 * SPEED
             if self.direction == "Left":
                 self.image = pg.transform.flip(self.image, True, False)
             self.direction = "Right"
@@ -60,17 +68,14 @@ class Player(object):
             if self.horizontalVelocity < -3:
                 self.horizontalVelocity = -3
             else:
-                self.horizontalVelocity -= 0.15 * self.speed
+                self.horizontalVelocity -= 0.15 * SPEED
             if self.direction == "Right":
                 self.image = pg.transform.flip(self.image, True, False)
             self.direction = "Left"
         if keys[pg.K_SPACE]:
             self.jump()
         if keys[pg.K_r]:
-            self.y = 50
-            self.x = 100
-            self.verticalVelocity = 0
-            self.horizontalVelocity = 0
+            self.reset()
         self.applyFriction()
         self.applyGravity()
 
@@ -81,7 +86,7 @@ class Player(object):
         ccollided = self.collider.getCollidingObjects(newRect, world.WorldMap.mapOneObjTable)
         if (ccollided == False):
             #we can assume it isnt colliding on x axis, and that anything colliding will be on the y axis
-            self.y += self.verticalVelocity
+            self.rect.y += self.verticalVelocity
             self.collided = False
         else:
             if (len(ccollided) == 1):
@@ -95,20 +100,20 @@ class Player(object):
                     #player is below
                     self.rect.top = collidedObject.rect.bottom
                     self.verticalVelocity = 0
-                    self.y = self.rect.y
+                    self.rect.y = self.rect.y
                 else:
                     #player is ontop
                     self.rect.bottom = collidedObject.rect.top
                     self.verticalVelocity = 0
-                    self.y = self.rect.y
+                    self.rect.y = self.rect.y
 
         newRect = self.rect
         newRect.x += self.horizontalVelocity 
         ccollided = self.collider.getCollidingObjects(newRect, world.WorldMap.mapOneObjTable)
         if ccollided == False:
             #nothing happened
-            #self.rect.move(self.x+self.horizontalVelocity,self.y)
-            self.x += self.horizontalVelocity
+            #self.rect.move(self.rect.x+self.horizontalVelocity,self.rect.y)
+            self.rect.x += self.horizontalVelocity
             if (self.collided != True):
                 self.collided = False
         else:
@@ -122,17 +127,17 @@ class Player(object):
                     #player is to the right of the collided object
                     self.rect.left = collidedObject.rect.right
                     self.horizontalVelocity = 0
-                    self.x = self.rect.x
+                    self.rect.x = self.rect.x
                 else:
                     #player is to the left of the collided object
                     self.rect.right = collidedObject.rect.left
                     self.horizontalVelocity = 0
-                    self.x = self.rect.x
+                    self.rect.x = self.rect.x
             else:
                 pass
         
-        self.rect.x = self.x
-        self.rect.y = self.y
+        self.rect.x = self.rect.x
+        self.rect.y = self.rect.y
 
     def draw(self, surface):
         if self.collided:
@@ -140,4 +145,4 @@ class Player(object):
         else:
             pg.draw.rect(surface, prepare.RED, self.rect, 2)
         #pg.draw.rect(surface, prepare.GREEN, (576,576,64,64),2)
-        surface.blit(self.image, (self.x, self.y))
+        surface.blit(self.image, (self.rect.x, self.rect.y))

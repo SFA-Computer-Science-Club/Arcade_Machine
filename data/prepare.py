@@ -28,23 +28,21 @@ NAVYBLUE = (0,0,153)
 VIOLET = (204,153,255)
 SKYBLUE = (28,92,140)
 
-
-
-
 #maps
 testMap = os.path.join('resources','map_data','TestMap.csv')
 testMap2 = os.path.join('resources','map_data','TestMap2.csv')
 testMap3 = os.path.join('resources','map_data','TestMap3.csv')
 testMap4 = os.path.join('resources','map_data','TestMap4.csv')
 
-#screen size for game
-SCREEN_SIZE = (1280, 1024)
+#screen size for game (1280, 1024)
+SCREEN_SIZE = (1280, 900)
+
+#cell size
+CELL_SIZE = (50, 50)
+PLAYER_SIZE = (90, 140)
 
 #creates screen with screen size.
 _screen = pygame.display.set_mode(SCREEN_SIZE)
-
-
-
 
 #music
 mainTheme = os.path.join('resources','music','Platformer_Main_Menu_Song.mp3')
@@ -90,13 +88,12 @@ _screen = pygame.display.set_mode(SCREEN_SIZE)
 #creates game rectangle for speed
 
 
-#fill screen with background_color
+#Preloading screen
 _screen.fill(BACKGROUND_COLOR)
-
 _render = SMALL_FONT.render("CS students are slacking, please wait warmly~~", 0, pygame.Color("white"))
 _screen.blit(_render, _render.get_rect(center=SCREEN_RECT.center))
 pygame.display.update()
-pygame.time.wait(1000)
+pygame.time.wait(500)
 
 
 
@@ -117,7 +114,7 @@ sfaCubeTexture = pygame.transform.scale(pygame.image.load(os.path.join('resource
 SPLASH1 = pygame.image.load(os.path.join('resources','image','SFA_CS_SPLASH.png'))
 titlewords = pygame.image.load(os.path.join('resources','image','Titlename.png'))
 playerImage = pygame.transform.scale(pygame.image.load(os.path.join('resources','image','LumberjackMale.png')).convert_alpha(), (90,140))
-
+playerImage2 = pygame.transform.scale(pygame.image.load(os.path.join('resources','image','LumberjackMale.png')).convert_alpha(), (90,140))
 
 # map table
 

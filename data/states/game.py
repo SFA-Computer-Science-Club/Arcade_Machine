@@ -28,10 +28,6 @@ class Game(state_machine._State):
         # if event.type == pg.KEYDOWN:
         #     self.player.move(event)
 
-    def get_key_event(self, keyEvent):
-        self.player.move(keyEvent)
-
-
     def update(self, keys, now):
         self.now = now
         self.world.update(now, self.player)

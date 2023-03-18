@@ -44,22 +44,14 @@ class Control(object):
         Process all events and pass them down to the state_machine.
         The f5 key globally turns on/off the display of FPS in the caption
         """
-        keys = pg.key.get_pressed()
         for event in pg.event.get():
             if event.type == pg.QUIT:
                 self.done = True
             elif event.type == pg.KEYDOWN:
-                pass
-                # self.toggle_show_fps(event.key)
-
+                self.keys = pg.key.get_pressed()
             elif event.type == pg.KEYUP:
                 self.keys = pg.key.get_pressed()
             self.state_machine.get_event(event)
-        self.state_machine.get_key_event(keys)
-
-    
-    # def toggle_show_fps(self,key):
-
 
     def show_fps(self):
         """
@@ -125,4 +117,18 @@ class Timer(object):
 # add tools for animations, sprites, loading/parsing resources, collision.
 
 class _SpriteTemplate(pg.sprite.Sprite):
-    pass
+    """
+    A base class that contains common used functions by all sprite based objects.
+    """
+    def __init__(self, pos, size, *groups):
+        pg.sprite.Sprite.__init__(self, *groups)
+        self.rect = pg.Rect(pos, size)
+    
+    def draw(self, surface):
+        surface.blit(self.image, self.rect)
+
+    def reset_position(self, value, attribute="topleft"):
+        """
+        resets the sprites location.
+        """
+        setattr(self.rect, attribute, value)

@@ -15,7 +15,7 @@ class WorldMap(object):
 
         #Create all of the objects
         id = 0
-        with open(prepare.testMap, 'r') as read_obj:
+        with open(prepare.testMap2, 'r') as read_obj:
             csv_reader = prepare.csv.reader(read_obj)
             for rowIndex, row in enumerate(csv_reader):
                 for columnIndex, column in enumerate(row):
