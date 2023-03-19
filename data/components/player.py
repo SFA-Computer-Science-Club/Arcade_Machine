@@ -155,7 +155,7 @@ class Player(tools._SpriteTemplate):
                 # hit.collide_with_player(self.rect)
                 # pg.draw.rect(surface, prepare.RED, self.rect, 2)
 
-    def draw(self, surface):
+    def draw_hitbox(self, surface):
         if self.collided:
             pg.draw.rect(surface, prepare.GREEN, self.rect, 2)
         else:

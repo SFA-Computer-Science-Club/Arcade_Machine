@@ -93,4 +93,4 @@ class Level(object):
         """Draw all sprites and background to the surface."""
         surface.blit(self.background, (0,0))
         self.all_group.draw(surface)
-        self.player.draw(surface)
+        self.player.draw_hitbox(surface)

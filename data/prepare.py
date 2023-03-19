@@ -134,12 +134,12 @@ GFX = get_graphics(_TILE_DICTIONARY)
 
                     
 #You can define some sprites or images here
-dirtTexture = pygame.transform.scale(pygame.image.load(os.path.join('resources','tiles','dirt_block.png')).convert(), CELL_SIZE)
-grassTexture = pygame.transform.scale(pygame.image.load(os.path.join('resources','tiles','grass_block.png')).convert(), CELL_SIZE)
-stoneTexture = pygame.transform.scale(pygame.image.load(os.path.join('resources','tiles','stone_block.png')).convert(), CELL_SIZE)
-goldStoneTexture = pygame.transform.scale(pygame.image.load(os.path.join('resources','tiles','gold_stone.png')).convert(), CELL_SIZE)
-brickBlockTexture = pygame.transform.scale(pygame.image.load(os.path.join('resources','tiles','brick_block.png')).convert(), CELL_SIZE)
-sfaCubeTexture = pygame.transform.scale(pygame.image.load(os.path.join('resources','tiles','sfa_cube.png')).convert(), CELL_SIZE)
+# dirtTexture = pygame.transform.scale(pygame.image.load(os.path.join('resources','tiles','dirt_block.png')).convert(), CELL_SIZE)
+# grassTexture = pygame.transform.scale(pygame.image.load(os.path.join('resources','tiles','grass_block.png')).convert(), CELL_SIZE)
+# stoneTexture = pygame.transform.scale(pygame.image.load(os.path.join('resources','tiles','stone_block.png')).convert(), CELL_SIZE)
+# goldStoneTexture = pygame.transform.scale(pygame.image.load(os.path.join('resources','tiles','gold_stone.png')).convert(), CELL_SIZE)
+# brickBlockTexture = pygame.transform.scale(pygame.image.load(os.path.join('resources','tiles','brick_block.png')).convert(), CELL_SIZE)
+# sfaCubeTexture = pygame.transform.scale(pygame.image.load(os.path.join('resources','tiles','sfa_cube.png')).convert(), CELL_SIZE)
 
 
 
