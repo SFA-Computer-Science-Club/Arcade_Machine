@@ -9,13 +9,13 @@ class WorldMap(object):
     mapOneObjTable = []
     mapOneFakeTable = []
     def __init__(self):
-        self.name = prepare.testMap2
+        self.name = prepare.testMap
         self.loaded = prepare.loaded
         self.scrolling = False
 
         #Create all of the objects
         id = 0
-        with open(prepare.testMap, 'r') as read_obj:
+        with open(self.name, 'r') as read_obj:
             csv_reader = prepare.csv.reader(read_obj)
             for rowIndex, row in enumerate(csv_reader):
                 for columnIndex, column in enumerate(row):
