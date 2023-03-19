@@ -38,8 +38,8 @@ testMap4 = os.path.join('resources','map_data','TestMap4.csv')
 SCREEN_SIZE = (1280, 900)
 
 #cell size
-CELL_SIZE = (50, 50)
-PLAYER_SIZE = (90, 140)
+CELL_SIZE = (48, 48)
+PLAYER_SIZE = (48, 70)
 
 #creates screen with screen size.
 _screen = pygame.display.set_mode(SCREEN_SIZE)
@@ -68,7 +68,7 @@ BACKGROUND_COLOR = (30, 40, 50)
 SCREEN_RECT = pygame.Rect((0,0), SCREEN_SIZE)
 
 #path of sfa logo for splash screen.
-_ICON_PATH = os.path.join("resources", "image", "sfa_cube.png")
+_ICON_PATH = os.path.join("resources", "tiles", "sfa_cube.png")
 
 #sets window icon for game window
 pygame.display.set_icon(pygame.image.load(_ICON_PATH))
@@ -102,19 +102,52 @@ DEFAULT_CONTROLS = {pygame.K_DOWN  : "down",
                     pygame.K_UP    : "up",
                     pygame.K_LEFT  : "left",
                     pygame.K_RIGHT : "right"}
+
+
+def get_graphics(filenames):
+    """
+    load all tile graphics
+    """
+    GFX = {}
+    base_path = os.path.join('resources','tiles')
+    for file in filenames.values():
+        path = os.path.join(base_path, file)
+        img = pygame.image.load(path)
+        img = pygame.transform.scale(img.convert(), CELL_SIZE)
+        GFX[file] = img
+    return GFX
+
+_TILE_FILENAMES = ['dirt_block.png',
+                   'grass_block.png',
+                   'stone_block.png',
+                   'gold_stone.png',
+                   'brick_block.png',
+                   'sfa_cube.png']
+_TILE_DICTIONARY = { '1' : 'dirt_block.png',
+                     '2' : 'gold_stone.png',
+                     '3' : 'grass_block.png',
+                     '4' : 'sfa_cube.png',
+                     '5' : 'stone_block.png',
+                     '6' : 'brick_block.png',}
+
+GFX = get_graphics(_TILE_DICTIONARY)
+
                     
 #You can define some sprites or images here
-dirtTexture = pygame.transform.scale(pygame.image.load(os.path.join('resources','image','dirt_block.png')).convert(), (64,64))
-grassTexture = pygame.transform.scale(pygame.image.load(os.path.join('resources','image','grass_block.png')).convert(), (64,64))
-stoneTexture = pygame.transform.scale(pygame.image.load(os.path.join('resources','image','stone_block.png')).convert(), (64,64))
+dirtTexture = pygame.transform.scale(pygame.image.load(os.path.join('resources','tiles','dirt_block.png')).convert(), CELL_SIZE)
+grassTexture = pygame.transform.scale(pygame.image.load(os.path.join('resources','tiles','grass_block.png')).convert(), CELL_SIZE)
+stoneTexture = pygame.transform.scale(pygame.image.load(os.path.join('resources','tiles','stone_block.png')).convert(), CELL_SIZE)
+goldStoneTexture = pygame.transform.scale(pygame.image.load(os.path.join('resources','tiles','gold_stone.png')).convert(), CELL_SIZE)
+brickBlockTexture = pygame.transform.scale(pygame.image.load(os.path.join('resources','tiles','brick_block.png')).convert(), CELL_SIZE)
+sfaCubeTexture = pygame.transform.scale(pygame.image.load(os.path.join('resources','tiles','sfa_cube.png')).convert(), CELL_SIZE)
+
+
+
 backGroundOne = pygame.transform.scale(pygame.image.load(os.path.join('resources','image','skybox_one.jpg')).convert(), SCREEN_SIZE)
-goldStoneTexture = pygame.transform.scale(pygame.image.load(os.path.join('resources','image','gold_stone.png')).convert(), (64,64))
-brickBlockTexture = pygame.transform.scale(pygame.image.load(os.path.join('resources','image','brick_block.png')).convert(), (64,64))
-sfaCubeTexture = pygame.transform.scale(pygame.image.load(os.path.join('resources','image','sfa_cube.png')).convert(), (64,64))
 SPLASH1 = pygame.image.load(os.path.join('resources','image','SFA_CS_SPLASH.png'))
 titlewords = pygame.image.load(os.path.join('resources','image','Titlename.png'))
-playerImage = pygame.transform.scale(pygame.image.load(os.path.join('resources','image','LumberjackMale.png')).convert_alpha(), (90,140))
-playerImage2 = pygame.transform.scale(pygame.image.load(os.path.join('resources','image','LumberjackMale.png')).convert_alpha(), (90,140))
+playerImage = pygame.transform.scale(pygame.image.load(os.path.join('resources','image','LumberjackMale.png')).convert_alpha(), PLAYER_SIZE)
+playerImage2 = pygame.transform.scale(pygame.image.load(os.path.join('resources','image','LumberjackMale.png')).convert_alpha(), PLAYER_SIZE)
 
 # map table
 

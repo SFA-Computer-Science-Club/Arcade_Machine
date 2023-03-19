@@ -3,17 +3,18 @@ import pygame as pg
 from  ..components import world, collision
 import math
 
-SPEED = 1
-JUMP_POWER = 5
+SPEED = 1.0
+JUMP_POWER = 2
 
 class Player(tools._SpriteTemplate):
     """A class for the player"""
     def __init__(self, *groups):
         tools._SpriteTemplate.__init__(self, (0,0), prepare.PLAYER_SIZE, *groups)
         self.controls = prepare.DEFAULT_CONTROLS
+        self.name = "Lumberjack"
         self.image = prepare.playerImage
+        self.direction = None
         self.collider = collision.Collision()
-
         self.reset()
 
     def reset(self):
@@ -24,7 +25,6 @@ class Player(tools._SpriteTemplate):
         self.reset_position(pos)
         self.verticalVelocity = 0
         self.horizontalVelocity = 0
-        self.direction = None
         self.score = 0
         self.state = 0
         self.health = 100
@@ -51,8 +51,7 @@ class Player(tools._SpriteTemplate):
         else:
             self.horizontalVelocity = 0
 
-
-    def update(self):
+    def update(self, now, player, solids, *args):
         #Goal is to increment our vertical, and horizontal velocity
         #Then move that one by one, then resolve that in our collision
         keys = pg.key.get_pressed()
@@ -61,17 +60,17 @@ class Player(tools._SpriteTemplate):
                 self.horizontalVelocity = 3
             else:
                 self.horizontalVelocity += 0.15 * SPEED
-            if self.direction == "Left":
+            if self.direction == "Right":
                 self.image = pg.transform.flip(self.image, True, False)
-            self.direction = "Right"
+            self.direction = "Left"
         if keys[pg.K_a]:
             if self.horizontalVelocity < -3:
                 self.horizontalVelocity = -3
             else:
                 self.horizontalVelocity -= 0.15 * SPEED
-            if self.direction == "Right":
+            if self.direction == "Left":
                 self.image = pg.transform.flip(self.image, True, False)
-            self.direction = "Left"
+            self.direction = "Right"
         if keys[pg.K_SPACE]:
             self.jump()
         if keys[pg.K_r]:
@@ -80,18 +79,18 @@ class Player(tools._SpriteTemplate):
         self.applyGravity()
 
         #after this point we have calculated all of our movement vectors, delta y and delta x
-
+        self.old_position = self.exact_position[:]
         newRect = self.rect
         newRect.y += self.verticalVelocity
-        ccollided = self.collider.getCollidingObjects(newRect, world.WorldMap.mapOneObjTable)
+        ccollided = self.check_collisions(player, solids) #self.collider.getCollidingObjects(newRect, world.WorldMap.mapOneObjTable)
         if (ccollided == False):
             #we can assume it isnt colliding on x axis, and that anything colliding will be on the y axis
             self.rect.y += self.verticalVelocity
             self.collided = False
         else:
-            if (len(ccollided) == 1):
+            if (ccollided != False):
                 #only one collided object
-                collidedObject = ccollided[0]
+                collidedObject = ccollided
                 centerPlayer = newRect.centery
                 centerObject = collidedObject.rect.centery
                 self.collided = True
@@ -109,7 +108,7 @@ class Player(tools._SpriteTemplate):
 
         newRect = self.rect
         newRect.x += self.horizontalVelocity 
-        ccollided = self.collider.getCollidingObjects(newRect, world.WorldMap.mapOneObjTable)
+        ccollided = self.check_collisions(player, solids) #self.collider.getCollidingObjects(newRect, world.WorldMap.mapOneObjTable)
         if ccollided == False:
             #nothing happened
             #self.rect.move(self.rect.x+self.horizontalVelocity,self.rect.y)
@@ -120,8 +119,8 @@ class Player(tools._SpriteTemplate):
             self.collided = True
             #it did collide on x axis do things
             centerPlayer = newRect.centerx
-            if (len(ccollided) == 1):
-                collidedObject = ccollided[0]
+            if (ccollided != False):
+                collidedObject = ccollided
                 centerObject = collidedObject.rect.centerx
                 if ((centerPlayer - centerObject) >= 0):
                     #player is to the right of the collided object
@@ -135,9 +134,26 @@ class Player(tools._SpriteTemplate):
                     self.rect.x = self.rect.x
             else:
                 pass
-        
-        self.rect.x = self.rect.x
-        self.rect.y = self.rect.y
+        self.exact_position = self.rect.topleft
+        # self.rect.x = self.rect.x
+        # self.rect.y = self.rect.y
+        # if ccollided != False:
+        #     ccollided.collide_with_player(player)
+
+    def check_collisions(self, player, solids):
+        """
+        Check collisions and call the appropriate functions of the affected sprites.
+        """
+        callback = tools.rect_then_mask
+        groups = pg.sprite.Group(solids)
+        hits = pg.sprite.spritecollide(player, groups, False, callback)
+        for hit in hits:
+            if hit.get_name != 'Lumberjack':
+                print(hit.get_data)
+                return hit
+            else: return False
+                # hit.collide_with_player(self.rect)
+                # pg.draw.rect(surface, prepare.RED, self.rect, 2)
 
     def draw(self, surface):
         if self.collided:
@@ -145,4 +161,10 @@ class Player(tools._SpriteTemplate):
         else:
             pg.draw.rect(surface, prepare.RED, self.rect, 2)
         #pg.draw.rect(surface, prepare.GREEN, (576,576,64,64),2)
-        surface.blit(self.image, (self.rect.x, self.rect.y))
+        # surface.blit(self.image, self.rect)
+    
+    def collide_with_solid(self):
+        # print("player collided with solid")
+        
+        self.exact_position = self.old_position[:]
+        self.rect.topleft = self.exact_position

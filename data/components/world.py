@@ -3,24 +3,33 @@ import sys
 import pygame as pg
 from csv import reader
 from .. import prepare, tools, logging
-from . import block
+from . import block, level
 
 class WorldMap(object):
     mapOneObjTable = []
     mapOneFakeTable = []
-    def __init__(self):
+
+
+    def __init__(self, player):
+        self.player = player
         self.name = prepare.testMap2
         self.loaded = prepare.loaded
         self.scrolling = False
+        self.scroll_vector = None
+        start_coords = None
+        self.level = level.Level(self.player, self.name)
+        # self.mapOneObjTable = []
+        # self.mapOneFakeTable = []
 
+    def notused(self):
         #Create all of the objects
         id = 0
-        with open(prepare.testMap2, 'r') as read_obj:
+        with open(self.name, 'r') as read_obj:
             csv_reader = prepare.csv.reader(read_obj)
             for rowIndex, row in enumerate(csv_reader):
                 for columnIndex, column in enumerate(row):
-                        x = columnIndex * 64
-                        y = rowIndex * 64
+                        x = columnIndex * prepare.CELL_SIZE[0]
+                        y = rowIndex * prepare.CELL_SIZE[1]
                         if column == '1':
                             dirtBlock = block.Block(x,y,"dirt_block",prepare.dirtTexture,prepare.dirtTexture.get_rect().move(x,y), id)
                             self.mapOneObjTable.append(dirtBlock)
@@ -43,7 +52,6 @@ class WorldMap(object):
                             brickBlock = block.Block(x,y,"brick_block",prepare.brickBlockTexture,prepare.brickBlockTexture.get_rect().move(x,y), id)
                             self.mapOneObjTable.append(brickBlock)
                         id += 1
-
     
     def load(self, world_name):
         """Load world given a world_name."""
@@ -59,11 +67,13 @@ class WorldMap(object):
         for object in self.mapOneObjTable:
             object.draw()
     
-    def update(self, now, player):
-        self.load(self.name)
+    def update(self, now):
+        # self.load(self.name)
+        self.level.update(now)
 
     def draw(self, surface, interpolate):
-        self.load(self.name)
-        pg.draw.rect(surface, prepare.RED, self.mapOneObjTable[0].rect, 2)
-        for object in self.mapOneFakeTable:
-            pg.draw.rect(surface, prepare.PURPLE, object.rect, 2)
+        # self.load(self.name)
+        # pg.draw.rect(surface, prepare.RED, self.mapOneObjTable[0].rect, 2)
+        # for object in self.mapOneFakeTable:
+        #     pg.draw.rect(surface, prepare.PURPLE, object.rect, 2)
+        self.level.draw(surface, interpolate)

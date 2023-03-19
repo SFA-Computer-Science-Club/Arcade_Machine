@@ -123,12 +123,24 @@ class _SpriteTemplate(pg.sprite.Sprite):
     def __init__(self, pos, size, *groups):
         pg.sprite.Sprite.__init__(self, *groups)
         self.rect = pg.Rect(pos, size)
-    
-    def draw(self, surface):
-        surface.blit(self.image, self.rect)
+        self.exact_position = list(self.rect.topleft)
+        self.old_position = self.exact_position[:]
+
+    @property
+    def get_name(self):
+        return self.name
 
     def reset_position(self, value, attribute="topleft"):
         """
         resets the sprites location.
         """
         setattr(self.rect, attribute, value)
+        self.exact_position = list(self.rect.topleft)
+        self.old_position = self.exact_position[:]
+
+def rect_then_mask(one,two):
+    """
+    callback function to check if two sprites collide
+    and if their rects collide
+    """
+    return pg.sprite.collide_rect(one,two) and pg.sprite.collide_mask(one,two)
