@@ -6,20 +6,15 @@ from .. import prepare, tools, logging
 from . import block, level
 
 class WorldMap(object):
-    mapOneObjTable = []
-    mapOneFakeTable = []
-
-
     def __init__(self, player):
         self.player = player
-        self.name = prepare.testMap2
+        self.world_name = "TestMap3.csv"
         self.loaded = prepare.loaded
+        self.world_file = self.load(self.world_name)
         self.scrolling = False
         self.scroll_vector = None
         start_coords = None
-        self.level = level.Level(self.player, self.name)
-        # self.mapOneObjTable = []
-        # self.mapOneFakeTable = []
+        self.level = level.Level(self.player, self.world_file)
 
     def notused(self):
         #Create all of the objects
@@ -53,27 +48,21 @@ class WorldMap(object):
                             self.mapOneObjTable.append(brickBlock)
                         id += 1
     
-    def load(self, world_name):
+    def load(self, name):
         """Load world given a world_name."""
+        path = os.path.join(".","resources","map_data",name)
         if self.loaded == False:
             self.loaded = True
             # do some initial things
-            logging.writeLog(f" {world_name}: loading for first time")
-        prepare._screen.blit(prepare.backGroundOne, (0,0))         
-        # prepare._screen.blit(pg.transform.scale(prepare.backGroundOne, prepare.SCREEN_SIZE), (0,0))  
+            logging.writeLog(f" {name}: loading for first time")
+        return path
+        
 
-        # pass the file object to reader() to get the reader object
-        # Iterate over each row in the csv using reader object
         for object in self.mapOneObjTable:
             object.draw()
     
     def update(self, now):
-        # self.load(self.name)
         self.level.update(now)
 
     def draw(self, surface, interpolate):
-        # self.load(self.name)
-        # pg.draw.rect(surface, prepare.RED, self.mapOneObjTable[0].rect, 2)
-        # for object in self.mapOneFakeTable:
-        #     pg.draw.rect(surface, prepare.PURPLE, object.rect, 2)
         self.level.draw(surface, interpolate)

@@ -5,7 +5,7 @@ Also contained are various constants used throughout the program.
 import os
 import pygame
 import csv
-
+from . import tools
 from data.components import player
 
 pygame.init()
@@ -27,12 +27,6 @@ LIME = (128,255,0)
 NAVYBLUE = (0,0,153)
 VIOLET = (204,153,255)
 SKYBLUE = (28,92,140)
-
-#maps
-testMap = os.path.join('resources','map_data','TestMap.csv')
-testMap2 = os.path.join('resources','map_data','TestMap2.csv')
-testMap3 = os.path.join('resources','map_data','TestMap3.csv')
-testMap4 = os.path.join('resources','map_data','TestMap4.csv')
 
 #screen size for game (1280, 1024)
 SCREEN_SIZE = (1280, 900)
@@ -95,34 +89,12 @@ _screen.blit(_render, _render.get_rect(center=SCREEN_RECT.center))
 pygame.display.update()
 pygame.time.wait(500)
 
-
-
 #The default controls for the game. CHANGE FOR JOYSTICK?
 DEFAULT_CONTROLS = {pygame.K_DOWN  : "down",
                     pygame.K_UP    : "up",
                     pygame.K_LEFT  : "left",
                     pygame.K_RIGHT : "right"}
 
-
-def get_graphics(filenames):
-    """
-    load all tile graphics
-    """
-    GFX = {}
-    base_path = os.path.join('resources','tiles')
-    for file in filenames.values():
-        path = os.path.join(base_path, file)
-        img = pygame.image.load(path)
-        img = pygame.transform.scale(img.convert(), CELL_SIZE)
-        GFX[file] = img
-    return GFX
-
-_TILE_FILENAMES = ['dirt_block.png',
-                   'grass_block.png',
-                   'stone_block.png',
-                   'gold_stone.png',
-                   'brick_block.png',
-                   'sfa_cube.png']
 _TILE_DICTIONARY = { '1' : 'dirt_block.png',
                      '2' : 'gold_stone.png',
                      '3' : 'grass_block.png',
@@ -130,17 +102,7 @@ _TILE_DICTIONARY = { '1' : 'dirt_block.png',
                      '5' : 'stone_block.png',
                      '6' : 'brick_block.png',}
 
-GFX = get_graphics(_TILE_DICTIONARY)
-
-                    
-#You can define some sprites or images here
-# dirtTexture = pygame.transform.scale(pygame.image.load(os.path.join('resources','tiles','dirt_block.png')).convert(), CELL_SIZE)
-# grassTexture = pygame.transform.scale(pygame.image.load(os.path.join('resources','tiles','grass_block.png')).convert(), CELL_SIZE)
-# stoneTexture = pygame.transform.scale(pygame.image.load(os.path.join('resources','tiles','stone_block.png')).convert(), CELL_SIZE)
-# goldStoneTexture = pygame.transform.scale(pygame.image.load(os.path.join('resources','tiles','gold_stone.png')).convert(), CELL_SIZE)
-# brickBlockTexture = pygame.transform.scale(pygame.image.load(os.path.join('resources','tiles','brick_block.png')).convert(), CELL_SIZE)
-# sfaCubeTexture = pygame.transform.scale(pygame.image.load(os.path.join('resources','tiles','sfa_cube.png')).convert(), CELL_SIZE)
-
+GFX = tools.get_graphics(_TILE_DICTIONARY)
 
 
 backGroundOne = pygame.transform.scale(pygame.image.load(os.path.join('resources','image','skybox_one.jpg')).convert(), SCREEN_SIZE)
@@ -148,34 +110,3 @@ SPLASH1 = pygame.image.load(os.path.join('resources','image','SFA_CS_SPLASH.png'
 titlewords = pygame.image.load(os.path.join('resources','image','Titlename.png'))
 playerImage = pygame.transform.scale(pygame.image.load(os.path.join('resources','image','LumberjackMale.png')).convert_alpha(), PLAYER_SIZE)
 playerImage2 = pygame.transform.scale(pygame.image.load(os.path.join('resources','image','LumberjackMale.png')).convert_alpha(), PLAYER_SIZE)
-
-# map table
-
-# mapOneObjTable = []
-
-# with open(testMap, 'r') as read_obj:
-#     csv_reader = csv.reader(read_obj)
-#     for rowIndex, row in enumerate(csv_reader):
-#         for columnIndex, column in enumerate(row):
-#                 x = columnIndex * 64
-#                 y = rowIndex * 64
-#                 if column == '1':
-
-#                     currentRowTable.append(dirtTexture)
-#                     mapOneRectTable.append(dirtTexture.get_rect().move(x,y))   
-#                 elif column == '2':
-#                     currentRowTable.append(goldStoneTexture)
-#                     mapOneRectTable.append(goldStoneTexture.get_rect().move(x,y))   
-#                 elif column == '3':
-#                     currentRowTable.append(grassTexture)
-#                     mapOneRectTable.append(grassTexture.get_rect().move(x,y))
-#                 elif column == '4':
-#                     currentRowTable.append(sfaCubeTexture)
-#                     mapOneRectTable.append(sfaCubeTexture.get_rect().move(x,y))        
-#                 elif column == '5':
-#                     currentRowTable.append(stoneTexture)
-#                     mapOneRectTable.append(stoneTexture.get_rect().move(x,y))
-#                 elif column == '6':
-#                     currentRowTable.append(brickBlockTexture)
-#                     mapOneRectTable.append(brickBlockTexture.get_rect().move(x,y))
-#         mapOneTable.append(currentRowTable)

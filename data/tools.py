@@ -5,7 +5,7 @@ Can hold future resource helper functions.
 
 import os
 import pygame as pg
-from . import state_machine
+from . import state_machine, prepare
 import cProfile
 import pstats
 
@@ -137,6 +137,19 @@ class _SpriteTemplate(pg.sprite.Sprite):
         setattr(self.rect, attribute, value)
         self.exact_position = list(self.rect.topleft)
         self.old_position = self.exact_position[:]
+
+def get_graphics(filenames):
+    """
+    load all tile graphics
+    """
+    GFX = {}
+    base_path = os.path.join('resources','tiles')
+    for file in filenames.values():
+        path = os.path.join(base_path, file)
+        img = pg.image.load(path)
+        img = pg.transform.scale(img.convert(), prepare.CELL_SIZE)
+        GFX[file] = img
+    return GFX
 
 def rect_then_mask(one,two):
     """

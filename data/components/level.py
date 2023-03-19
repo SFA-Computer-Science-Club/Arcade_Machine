@@ -75,19 +75,17 @@ class Level(object):
         self.all_group.update(now, self.player, self.solids, self.group_dict)
         # self.check_collisions()
     
-    # def check_collisions(self):
-    #     """
-    #     Check collisions and call the appropriate functions of the affected sprites.
-    #     """
-    #     callback = tools.rect_then_mask
-    #     groups = pg.sprite.Group(self.solids)
-    #     hits = pg.sprite.spritecollide(self.player, groups, False, callback)
-    #     for hit in hits:
-    #         if hit.get_name != 'Lumberjack':
-    #             hit.collide_with_player(self.player)
-    #             pg.draw.rect(surface, prepare.RED, self.rect, 2)
-
-
+    def NOTUSED_check_collisions(self):
+        """
+        Check collisions and call the appropriate functions of the affected sprites.
+        """
+        callback = tools.rect_then_mask
+        groups = pg.sprite.Group(self.solids)
+        hits = pg.sprite.spritecollide(self.player, groups, False, callback)
+        for hit in hits:
+            if hit.get_name != 'Lumberjack':
+                hit.collide_with_player(self.player)
+                pg.draw.rect(surface, prepare.RED, self.rect, 2)
 
     def draw(self, surface, interpolate):
         """Draw all sprites and background to the surface."""
