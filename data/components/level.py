@@ -11,7 +11,7 @@ class Tile(tools._SpriteTemplate):
     def __init__(self, source, target, id, mask):
         """If the player can collide with it pass mask=True."""
         tools._SpriteTemplate.__init__(self, target, prepare.CELL_SIZE)
-        self.name = prepare._TILE_DICTIONARY[source]
+        self.tile_name = prepare._TILE_DICTIONARY[source]
         self.image = prepare.GFX[self.name]
         self.id = id
         if mask:
@@ -19,7 +19,7 @@ class Tile(tools._SpriteTemplate):
 
     @property
     def get_data(self):
-        return (self.id, self.name, self.rect)
+        return (self.id, self.tile_name, self.rect)
 
     def collide_with_player(self, player):
         """
@@ -27,7 +27,6 @@ class Tile(tools._SpriteTemplate):
         have this method.
         """
         print(self.get_name, self.rect)
-        
         player.collide_with_solid()
     
     def update(self, *args):
@@ -85,7 +84,6 @@ class Level(object):
         for hit in hits:
             if hit.get_name != 'Lumberjack':
                 hit.collide_with_player(self.player)
-                pg.draw.rect(surface, prepare.RED, self.rect, 2)
 
     def draw(self, surface, interpolate):
         """Draw all sprites and background to the surface."""
