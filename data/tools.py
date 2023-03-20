@@ -5,7 +5,7 @@ Can hold future resource helper functions.
 
 import os
 import pygame as pg
-from . import state_machine
+from . import state_machine, prepare
 import cProfile
 import pstats
 
@@ -44,22 +44,14 @@ class Control(object):
         Process all events and pass them down to the state_machine.
         The f5 key globally turns on/off the display of FPS in the caption
         """
-        keys = pg.key.get_pressed()
         for event in pg.event.get():
             if event.type == pg.QUIT:
                 self.done = True
             elif event.type == pg.KEYDOWN:
-                pass
-                # self.toggle_show_fps(event.key)
-
+                self.keys = pg.key.get_pressed()
             elif event.type == pg.KEYUP:
                 self.keys = pg.key.get_pressed()
             self.state_machine.get_event(event)
-        self.state_machine.get_key_event(keys)
-
-    
-    # def toggle_show_fps(self,key):
-
 
     def show_fps(self):
         """
@@ -125,4 +117,43 @@ class Timer(object):
 # add tools for animations, sprites, loading/parsing resources, collision.
 
 class _SpriteTemplate(pg.sprite.Sprite):
-    pass
+    """
+    A base class that contains common used functions by all sprite based objects.
+    """
+    def __init__(self, pos, size, *groups):
+        pg.sprite.Sprite.__init__(self, *groups)
+        self.rect = pg.Rect(pos, size)
+        self.exact_position = list(self.rect.topleft)
+        self.old_position = self.exact_position[:]
+
+    @property
+    def get_name(self):
+        return self.name
+
+    def reset_position(self, value, attribute="topleft"):
+        """
+        resets the sprites location.
+        """
+        setattr(self.rect, attribute, value)
+        self.exact_position = list(self.rect.topleft)
+        self.old_position = self.exact_position[:]
+
+def get_graphics(filenames):
+    """
+    load all tile graphics
+    """
+    GFX = {}
+    base_path = os.path.join('resources','tiles')
+    for file in filenames.values():
+        path = os.path.join(base_path, file)
+        img = pg.image.load(path)
+        img = pg.transform.scale(img.convert(), prepare.CELL_SIZE)
+        GFX[file] = img
+    return GFX
+
+def rect_then_mask(one,two):
+    """
+    callback function to check if two sprites collide
+    and if their rects collide
+    """
+    return pg.sprite.collide_rect(one,two) and pg.sprite.collide_mask(one,two)

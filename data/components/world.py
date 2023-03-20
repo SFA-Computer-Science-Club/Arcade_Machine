@@ -3,23 +3,28 @@ import sys
 import pygame as pg
 from csv import reader
 from .. import prepare, tools, logging
-from . import block
+from . import block, level
 
 class WorldMap(object):
-    mapOneObjTable = []
-    def __init__(self):
-        self.name = prepare.testMap2
+    def __init__(self, player):
+        self.player = player
+        self.world_name = "TestMap3.csv"
         self.loaded = prepare.loaded
+        self.world_file = self.load(self.world_name)
         self.scrolling = False
+        self.scroll_vector = None
+        start_coords = None
+        self.level = level.Level(self.player, self.world_file)
 
+    def notused(self):
         #Create all of the objects
         id = 0
         with open(self.name, 'r') as read_obj:
             csv_reader = prepare.csv.reader(read_obj)
             for rowIndex, row in enumerate(csv_reader):
                 for columnIndex, column in enumerate(row):
-                        x = columnIndex * 64
-                        y = rowIndex * 64
+                        x = columnIndex * prepare.CELL_SIZE[0]
+                        y = rowIndex * prepare.CELL_SIZE[1]
                         if column == '1':
                             dirtBlock = block.Block(x,y,"dirt_block",prepare.dirtTexture,prepare.dirtTexture.get_rect().move(x,y), id)
                             self.mapOneObjTable.append(dirtBlock)
@@ -42,24 +47,22 @@ class WorldMap(object):
                             brickBlock = block.Block(x,y,"brick_block",prepare.brickBlockTexture,prepare.brickBlockTexture.get_rect().move(x,y), id)
                             self.mapOneObjTable.append(brickBlock)
                         id += 1
-
     
-    def load(self, world_name):
+    def load(self, name):
         """Load world given a world_name."""
+        path = os.path.join(".","resources","map_data",name)
         if self.loaded == False:
             self.loaded = True
             # do some initial things
-            logging.writeLog(f" {world_name}: loading for first time")
-        prepare._screen.blit(prepare.backGroundOne, (0,0))         
-        # prepare._screen.blit(pg.transform.scale(prepare.backGroundOne, prepare.SCREEN_SIZE), (0,0))  
+            logging.writeLog(f" {name}: loading for first time")
+        return path
+        
 
-        # pass the file object to reader() to get the reader object
-        # Iterate over each row in the csv using reader object
         for object in self.mapOneObjTable:
             object.draw()
     
-    def update(self, now, player):
-        self.load(self.name)
+    def update(self, now):
+        self.level.update(now)
 
     def draw(self, surface, interpolate):
-        self.load(self.name)
+        self.level.draw(surface, interpolate)

@@ -1,24 +1,35 @@
-from .. import prepare
+from .. import prepare, tools
 import pygame as pg
 from  ..components import world, collision
 import math
 
-class Player(object):
-    def __init__(self):
+SPEED = 1.0
+JUMP_POWER = 2
+
+class Player(tools._SpriteTemplate):
+    """A class for the player"""
+    def __init__(self, *groups):
+        tools._SpriteTemplate.__init__(self, (0,0), prepare.PLAYER_SIZE, *groups)
+        self.controls = prepare.DEFAULT_CONTROLS
+        self.name = "Lumberjack"
         self.image = prepare.playerImage
-        self.health = 100
+        self.direction = None
         self.collider = collision.Collision()
-        self.speed = 1
+        self.reset()
+
+    def reset(self):
+        """
+        reset all variables for a fresh player.
+        """
+        pos = (100, 50)
+        self.reset_position(pos)
         self.verticalVelocity = 0
         self.horizontalVelocity = 0
-        self.x = 100
-        self.y = 50
-        self.rect = prepare.playerImage.get_rect().move(self.x,self.y)
         self.score = 0
-        self.jumpPower = 5
         self.state = 0
         self.currJump = 0
         self.direction = None
+        self.health = 100
         self.collided = False
         self.canJump = True
         self.grounded = False
@@ -42,6 +53,7 @@ class Player(object):
 
     def applyGravity(self):
         self.verticalVelocity += 0.15
+        math.ceil(self.verticalVelocity)
 
     def applyFriction(self):
         if (self.horizontalVelocity < -0.1):
@@ -51,6 +63,7 @@ class Player(object):
             self.horizontalVelocity -= 0.05
         else:
             self.horizontalVelocity = 0
+        math.ceil(self.horizontalVelocity)
 
     def move(self, event):
         #this fires event events
@@ -58,7 +71,7 @@ class Player(object):
             if event.key == pg.K_SPACE:
                 self.jump()
 
-    def update(self):
+    def update(self, now, player, solids, *args):
         #Goal is to increment our vertical, and horizontal velocity
         #Then move that one by one, then resolve that in our collision
         keys = pg.key.get_pressed()
@@ -66,23 +79,20 @@ class Player(object):
             if self.horizontalVelocity > 3:
                 self.horizontalVelocity = 3
             else:
-                self.horizontalVelocity += 0.15 * self.speed
-            if self.direction == "Left":
+                self.horizontalVelocity += 0.15 * SPEED
+            if self.direction == "Right":
                 self.image = pg.transform.flip(self.image, True, False)
-            self.direction = "Right"
+            self.direction = "Left"
         if keys[pg.K_a]:
             if self.horizontalVelocity < -3:
                 self.horizontalVelocity = -3
             else:
-                self.horizontalVelocity -= 0.15 * self.speed
-            if self.direction == "Right":
+                self.horizontalVelocity -= 0.15 * SPEED
+            if self.direction == "Left":
                 self.image = pg.transform.flip(self.image, True, False)
             self.direction = "Left"
         if keys[pg.K_r]:
-            self.y = 50
-            self.x = 100
-            self.verticalVelocity = 0
-            self.horizontalVelocity = 0
+            self.reset()
         self.applyFriction()
         self.applyGravity()
 
@@ -104,7 +114,7 @@ class Player(object):
             self.collided = True
             if (len(ccollided) == 1):
                 #only one collided object
-                collidedObject = ccollided[0]
+                collidedObject = ccollided
                 centerPlayer = newRect.centery
                 centerObject = collidedObject.rect.centery
 
@@ -112,7 +122,7 @@ class Player(object):
                     #player is below
                     self.rect.top = collidedObject.rect.bottom
                     self.verticalVelocity = 0
-                    self.y = self.rect.y
+                    self.rect.y = self.rect.y
                 else:
                     #player is ontop
                     self.rect.bottom = collidedObject.rect.top
@@ -154,27 +164,27 @@ class Player(object):
         ccollided = self.collider.getCollidingObjects(newRect, world.WorldMap.mapOneObjTable)
         if ccollided == False:
             #nothing happened
-            #self.rect.move(self.x+self.horizontalVelocity,self.y)
-            self.x += self.horizontalVelocity
+            #self.rect.move(self.rect.x+self.horizontalVelocity,self.rect.y)
+            self.rect.x += self.horizontalVelocity
             if (self.collided != True):
                 self.collided = False
         else:
             self.collided = True
             #it did collide on x axis do things
             centerPlayer = newRect.centerx
-            if (len(ccollided) == 1):
-                collidedObject = ccollided[0]
+            if (ccollided != False):
+                collidedObject = ccollided
                 centerObject = collidedObject.rect.centerx
                 if ((centerPlayer - centerObject) >= 0):
                     #player is to the right of the collided object
                     self.rect.left = collidedObject.rect.right
                     self.horizontalVelocity = 0
-                    self.x = self.rect.x
+                    self.rect.x = self.rect.x
                 else:
                     #player is to the left of the collided object
                     self.rect.right = collidedObject.rect.left
                     self.horizontalVelocity = 0
-                    self.x = self.rect.x
+                    self.rect.x = self.rect.x
             else:
                 closestBlock = None
                 closestNum = 0
@@ -200,11 +210,34 @@ class Player(object):
         self.rect.x = newRect.x
         self.rect.y = newRect.y
 
-    def draw(self, surface):
-        # if self.closestBlock != None:
-        #     pg.draw.rect(surface, prepare.YELLOW, self.closestBlock, 2)
-        # if self.collided:
-        #     pg.draw.rect(surface, prepare.GREEN, self.rect, 2)
-        # else:
-        #     pg.draw.rect(surface, prepare.RED, self.rect, 2)
-        surface.blit(self.image, (self.x, self.y))
+
+    def check_collisions(self, player, groups):
+        """
+        Check collisions and call the appropriate functions of the affected sprites.
+        """
+        callback = tools.rect_then_mask
+        hits = pg.sprite.spritecollide(player, groups, False, callback)
+        print(hits)
+        if not hits:
+            return False
+        else:
+            for hit in hits:
+                if hit.get_name != 'Lumberjack':
+                    # print(hit.get_data)
+                    return hit
+                else: return False
+                    # hit.collide_with_player(self.rect)
+                    # pg.draw.rect(surface, prepare.RED, self.rect, 2)
+
+    def draw_hitbox(self, surface):
+        if self.collided:
+            pg.draw.rect(surface, prepare.GREEN, self.rect, 2)
+        else:
+            pg.draw.rect(surface, prepare.RED, self.rect, 2)
+        #pg.draw.rect(surface, prepare.GREEN, (576,576,64,64),2)
+        # surface.blit(self.image, self.rect)
+    
+    def collide_with_solid(self):
+        # print("player collided with solid")
+        self.exact_position = self.old_position[:]
+        self.rect.topleft = self.exact_position

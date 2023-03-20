@@ -12,7 +12,6 @@ class Game(state_machine._State):
         state_machine._State.__init__(self)
         self.world = None
         self.reset_map = True
-        self.player = player.Player()
 
     def startup(self, now, persistant):
         """
@@ -21,27 +20,19 @@ class Game(state_machine._State):
         state_machine._State.startup(self, now, persistant)
         if self.reset_map:
             #reset game to beginning and reset all variables.
-            self.world = world.WorldMap()
+            self.player = player.Player()
+            self.world = world.WorldMap(self.player)
+            self.reset_map = False
     
     def get_event(self, event):
         self.player.move(event)
         pass
-        # if event.type == pg.KEYDOWN:
-        #     self.player.move(event)
-
-    def get_key_event(self, keyEvent):
-        #self.player.move(keyEvent)
-        pass
-
 
     def update(self, keys, now):
+        """Update phase for the primary game state."""
         self.now = now
-        self.world.update(now, self.player)
-        self.player.update()
+        self.world.update(now)
 
     def draw(self, surface, interpolate):
-        self.world.draw(surface, interpolate)
-        self.player.draw(surface)
-
-
-        
+        """Draw level and HUD(soontm)"""
+        self.world.draw(surface, interpolate)       

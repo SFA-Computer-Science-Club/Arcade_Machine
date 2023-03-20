@@ -53,9 +53,6 @@ class StateMachine(object):
         """
         self.state.get_event(event)
 
-    def get_key_event(self, keyEvent):
-        #testing to see if this works
-        self.state.get_key_event(keyEvent)
 
 class _State(object):
     """
