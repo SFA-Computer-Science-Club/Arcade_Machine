@@ -38,9 +38,11 @@ class Player(tools._SpriteTemplate):
         if self.verticalVelocity < 0:
             self.verticalVelocity = 0
         self.verticalVelocity -= JUMP_POWER
+        math.ceil(self.verticalVelocity)
 
     def applyGravity(self):
         self.verticalVelocity += 0.15
+        math.ceil(self.verticalVelocity)
 
     def applyFriction(self):
         if (self.horizontalVelocity < -0.1):
@@ -50,6 +52,7 @@ class Player(tools._SpriteTemplate):
             self.horizontalVelocity -= 0.05
         else:
             self.horizontalVelocity = 0
+        math.ceil(self.horizontalVelocity)
 
     def update(self, now, player, solids, *args):
         #Goal is to increment our vertical, and horizontal velocity
@@ -140,20 +143,23 @@ class Player(tools._SpriteTemplate):
         # if ccollided != False:
         #     ccollided.collide_with_player(player)
 
-    def check_collisions(self, player, solids):
+    def check_collisions(self, player, groups):
         """
         Check collisions and call the appropriate functions of the affected sprites.
         """
         callback = tools.rect_then_mask
-        groups = pg.sprite.Group(solids)
         hits = pg.sprite.spritecollide(player, groups, False, callback)
-        for hit in hits:
-            if hit.get_name != 'Lumberjack':
-                print(hit.get_data)
-                return hit
-            else: return False
-                # hit.collide_with_player(self.rect)
-                # pg.draw.rect(surface, prepare.RED, self.rect, 2)
+        print(hits)
+        if not hits:
+            return False
+        else:
+            for hit in hits:
+                if hit.get_name != 'Lumberjack':
+                    # print(hit.get_data)
+                    return hit
+                else: return False
+                    # hit.collide_with_player(self.rect)
+                    # pg.draw.rect(surface, prepare.RED, self.rect, 2)
 
     def draw_hitbox(self, surface):
         if self.collided:
@@ -165,6 +171,5 @@ class Player(tools._SpriteTemplate):
     
     def collide_with_solid(self):
         # print("player collided with solid")
-        
         self.exact_position = self.old_position[:]
         self.rect.topleft = self.exact_position

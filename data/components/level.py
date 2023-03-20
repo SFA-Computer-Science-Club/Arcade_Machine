@@ -11,7 +11,7 @@ class Tile(tools._SpriteTemplate):
     def __init__(self, source, target, id, mask):
         """If the player can collide with it pass mask=True."""
         tools._SpriteTemplate.__init__(self, target, prepare.CELL_SIZE)
-        self.tile_name = prepare._TILE_DICTIONARY[source]
+        self.name = prepare._TILE_DICTIONARY[source]
         self.image = prepare.GFX[self.name]
         self.id = id
         if mask:
@@ -19,7 +19,7 @@ class Tile(tools._SpriteTemplate):
 
     @property
     def get_data(self):
-        return (self.id, self.tile_name, self.rect)
+        return (self.id, self.name, self.rect)
 
     def collide_with_player(self, player):
         """
@@ -39,12 +39,13 @@ class Level(object):
         self.name = map_name
         self.background = self.make_background()
         self.main_sprites = pg.sprite.Group(self.player)
+        
         self.solids = self.make_tile_group(True)
-        self.all_group = self.solids
-        self.all_group.add(self.player)
+        self.all_group = pg.sprite.Group(self.solids, self.player)
         self.group_dict = {"main" : self.main_sprites,
                            "solids" : self.solids,
-                           "all" : self.all_group}
+                           "all" : self.all_group,
+                           }
 
     def make_background(self):
         return prepare.backGroundOne
@@ -71,7 +72,8 @@ class Level(object):
         """
         Update all sprites; check any collisions that may have occured;
         """
-        self.all_group.update(now, self.player, self.solids, self.group_dict)
+        groups = pg.sprite.Group(self.solids)
+        self.all_group.update(now, self.player, groups, self.group_dict)
         # self.check_collisions()
     
     def NOTUSED_check_collisions(self):
