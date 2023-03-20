@@ -156,4 +156,5 @@ def rect_then_mask(one,two):
     callback function to check if two sprites collide
     and if their rects collide
     """
-    return pg.sprite.collide_rect(one,two) and pg.sprite.collide_mask(one,two)
+    # return pg.sprite.collide_rect(one,two) and pg.sprite.collide_mask(one,two)
+    return pg.sprite.collide_rect(one,two)

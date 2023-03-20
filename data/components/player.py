@@ -108,7 +108,7 @@ class Player(tools._SpriteTemplate):
         ccollided = self.check_collisions(player, groups)
         if (ccollided == False):
             #we can assume it isnt colliding on x axis, and that anything colliding will be on the y axis
-            self.rect.y += self.verticalVelocity
+            # self.rect.y += self.verticalVelocity
             self.rect.y = newVelocityY
             self.collided = False
         else:
