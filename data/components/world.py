@@ -8,7 +8,7 @@ from . import block, level
 class WorldMap(object):
     def __init__(self, player):
         self.player = player
-        self.world_name = "TestMap3.csv"
+        self.world_name = "TestMap2.csv"
         self.loaded = prepare.loaded
         self.world_file = self.load(self.world_name)
         self.scrolling = False
@@ -56,8 +56,6 @@ class WorldMap(object):
             # do some initial things
             logging.writeLog(f" {name}: loading for first time")
         return path
-        
-
         for object in self.mapOneObjTable:
             object.draw()
     

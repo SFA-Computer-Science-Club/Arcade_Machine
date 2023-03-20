@@ -4,7 +4,7 @@ from  ..components import world, collision
 import math
 
 SPEED = 1.0
-JUMP_POWER = 2
+JUMP_POWER = 5
 
 class Player(tools._SpriteTemplate):
     """A class for the player"""
@@ -44,9 +44,9 @@ class Player(tools._SpriteTemplate):
         if self.verticalVelocity < 0:
             self.verticalVelocity = 0
         if self.currJump == 1:
-            self.verticalVelocity -= self.jumpPower * 1.5
+            self.verticalVelocity -= JUMP_POWER * 1.5
         else:   
-            self.verticalVelocity -= self.jumpPower
+            self.verticalVelocity -= JUMP_POWER
         self.currJump += 1
         if self.currJump == 2:
             self.canJump = False
@@ -71,7 +71,7 @@ class Player(tools._SpriteTemplate):
             if event.key == pg.K_SPACE:
                 self.jump()
 
-    def update(self, now, player, solids, *args):
+    def update(self, now, player, groups, *args):
         #Goal is to increment our vertical, and horizontal velocity
         #Then move that one by one, then resolve that in our collision
         keys = pg.key.get_pressed()
@@ -100,14 +100,15 @@ class Player(tools._SpriteTemplate):
         #maybe rounding the numbers help?
         #add the velocity to the x and y, then just make sure you round them when you pass it to the function
 
-        newVelocityY = round(self.y + self.verticalVelocity)
+        newVelocityY = round(self.rect.y + self.verticalVelocity)
 
         newRect = self.rect
         newRect.y = newVelocityY
-        ccollided = self.collider.getCollidingObjects(newRect, world.WorldMap.mapOneObjTable)
+        # ccollided = self.collider.getCollidingObjects(newRect, world.WorldMap.mapOneObjTable)
+        ccollided = self.check_collisions(player, groups)
         if (ccollided == False):
             #we can assume it isnt colliding on x axis, and that anything colliding will be on the y axis
-            self.y += self.verticalVelocity
+            self.rect.y += self.verticalVelocity
             self.rect.y = newVelocityY
             self.collided = False
         else:
@@ -116,18 +117,18 @@ class Player(tools._SpriteTemplate):
                 #only one collided object
                 collidedObject = ccollided
                 centerPlayer = newRect.centery
-                centerObject = collidedObject.rect.centery
+                centerObject = collidedObject[0].rect.centery
 
                 if (centerPlayer - centerObject > 0):
                     #player is below
-                    self.rect.top = collidedObject.rect.bottom
+                    self.rect.top = collidedObject[0].rect.bottom
                     self.verticalVelocity = 0
-                    self.rect.y = self.rect.y
+                    
                 else:
                     #player is ontop
-                    self.rect.bottom = collidedObject.rect.top
+                    self.rect.bottom = collidedObject[0].rect.top
                     self.verticalVelocity = 0
-                    self.y = self.rect.y
+                    
                     self.canJump = True
                     self.currJump = 0
             else:
@@ -147,7 +148,7 @@ class Player(tools._SpriteTemplate):
                     #means that the closest block is above is
                     print("bottom")
                     self.rect.top = closestBlock.rect.bottom
-                    self.y = self.rect.y
+                    
                     self.verticalVelocity = 0
                 else:
                     #we are ontop of something
@@ -155,13 +156,14 @@ class Player(tools._SpriteTemplate):
                     self.currJump = 0
                     self.rect.bottom = closestBlock.rect.top
                     self.verticalVelocity = 0
-                    self.y = self.rect.y
+                    
 
         newRect = self.rect
-        newVelocityX = round(self.x + self.horizontalVelocity)
+        newVelocityX = round(self.rect.x + self.horizontalVelocity)
         newRect.x = newVelocityX
         
-        ccollided = self.collider.getCollidingObjects(newRect, world.WorldMap.mapOneObjTable)
+        # ccollided = self.collider.getCollidingObjects(newRect, world.WorldMap.mapOneObjTable)
+        ccollided = self.check_collisions(player, groups)
         if ccollided == False:
             #nothing happened
             #self.rect.move(self.rect.x+self.horizontalVelocity,self.rect.y)
@@ -172,19 +174,19 @@ class Player(tools._SpriteTemplate):
             self.collided = True
             #it did collide on x axis do things
             centerPlayer = newRect.centerx
-            if (ccollided != False):
+            if (len(ccollided) == 1):
                 collidedObject = ccollided
-                centerObject = collidedObject.rect.centerx
+                centerObject = collidedObject[0].rect.centerx
                 if ((centerPlayer - centerObject) >= 0):
                     #player is to the right of the collided object
-                    self.rect.left = collidedObject.rect.right
+                    self.rect.left = collidedObject[0].rect.right
                     self.horizontalVelocity = 0
-                    self.rect.x = self.rect.x
+                    
                 else:
                     #player is to the left of the collided object
-                    self.rect.right = collidedObject.rect.left
+                    self.rect.right = collidedObject[0].rect.left
                     self.horizontalVelocity = 0
-                    self.rect.x = self.rect.x
+                    
             else:
                 closestBlock = None
                 closestNum = 0
@@ -200,13 +202,12 @@ class Player(tools._SpriteTemplate):
                 #now we have our closest tile
                 if (self.rect.centerx - closestBlock.rect.centerx > 0):
                     self.rect.left = closestBlock.rect.right
-                    self.x = self.rect.x
+                    
                     self.horizontalVelocity = 0
                 else:
                     self.rect.right = closestBlock.rect.left
                     self.horizontalVelocity = 0
-                    self.x = self.rect.x
-        
+                    
         self.rect.x = newRect.x
         self.rect.y = newRect.y
 
@@ -218,16 +219,10 @@ class Player(tools._SpriteTemplate):
         callback = tools.rect_then_mask
         hits = pg.sprite.spritecollide(player, groups, False, callback)
         print(hits)
-        if not hits:
-            return False
+        if hits:
+            return hits
         else:
-            for hit in hits:
-                if hit.get_name != 'Lumberjack':
-                    # print(hit.get_data)
-                    return hit
-                else: return False
-                    # hit.collide_with_player(self.rect)
-                    # pg.draw.rect(surface, prepare.RED, self.rect, 2)
+            return False
 
     def draw_hitbox(self, surface):
         if self.collided:
