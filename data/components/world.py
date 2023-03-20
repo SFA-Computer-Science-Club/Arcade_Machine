@@ -7,9 +7,8 @@ from . import block
 
 class WorldMap(object):
     mapOneObjTable = []
-    mapOneFakeTable = []
     def __init__(self):
-        self.name = prepare.testMap
+        self.name = prepare.testMap2
         self.loaded = prepare.loaded
         self.scrolling = False
 
@@ -64,6 +63,3 @@ class WorldMap(object):
 
     def draw(self, surface, interpolate):
         self.load(self.name)
-        pg.draw.rect(surface, prepare.RED, self.mapOneObjTable[0].rect, 2)
-        for object in self.mapOneFakeTable:
-            pg.draw.rect(surface, prepare.PURPLE, object.rect, 2)

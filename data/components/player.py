@@ -75,15 +75,21 @@ class Player(object):
         self.applyGravity()
 
         #after this point we have calculated all of our movement vectors, delta y and delta x
+        #maybe rounding the numbers help?
+        #add the velocity to the x and y, then just make sure you round them when you pass it to the function
+
+        newVelocityY = round(self.y + self.verticalVelocity)
 
         newRect = self.rect
-        newRect.y += self.verticalVelocity
+        newRect.y = newVelocityY
         ccollided = self.collider.getCollidingObjects(newRect, world.WorldMap.mapOneObjTable)
         if (ccollided == False):
             #we can assume it isnt colliding on x axis, and that anything colliding will be on the y axis
             self.y += self.verticalVelocity
+            self.rect.y = newVelocityY
             self.collided = False
         else:
+            print("Y collision, self.y: ", self.y, ", self.rect.y: ", self.rect.y, ", y velocity: ", self.verticalVelocity, ", newRect.y: ",newRect.y)
             if (len(ccollided) == 1):
                 #only one collided object
                 collidedObject = ccollided[0]
@@ -91,7 +97,7 @@ class Player(object):
                 centerObject = collidedObject.rect.centery
                 self.collided = True
 
-                if (centerPlayer - centerObject >= 0):
+                if (centerPlayer - centerObject > 0):
                     #player is below
                     self.rect.top = collidedObject.rect.bottom
                     self.verticalVelocity = 0
@@ -101,9 +107,28 @@ class Player(object):
                     self.rect.bottom = collidedObject.rect.top
                     self.verticalVelocity = 0
                     self.y = self.rect.y
+            else:
+                closestBlock = None
+                closestNum = 0
+                for tile in ccollided:
+                    if closestBlock == None:
+                        #first loop
+                        closestBlock = tile
+                        closestNum = abs(tile.rect.centery - self.rect.centery)
+                    if abs(tile.rect.centery - self.rect.centery) < closestNum:
+                        #something is closer
+                        closestBlock = tile
+                #now we have our closest tile
+                self.rect.bottom = closestBlock.rect.top
+                self.verticalVelocity = 0
+                self.y = self.rect.y
+
+                
 
         newRect = self.rect
-        newRect.x += self.horizontalVelocity 
+        newVelocityX = round(self.x + self.horizontalVelocity)
+        newRect.x = newVelocityX
+        
         ccollided = self.collider.getCollidingObjects(newRect, world.WorldMap.mapOneObjTable)
         if ccollided == False:
             #nothing happened
@@ -115,6 +140,7 @@ class Player(object):
             self.collided = True
             #it did collide on x axis do things
             centerPlayer = newRect.centerx
+            print("X collision, self.x: ", self.x, ", self.rect.x: ", self.rect.x, ", x velocity: ", self.horizontalVelocity, ", newRect.x: ",newRect.x)
             if (len(ccollided) == 1):
                 collidedObject = ccollided[0]
                 centerObject = collidedObject.rect.centerx
@@ -131,13 +157,12 @@ class Player(object):
             else:
                 pass
         
-        self.rect.x = self.x
-        self.rect.y = self.y
+        self.rect.x = newRect.x
+        self.rect.y = newRect.y
 
     def draw(self, surface):
         if self.collided:
             pg.draw.rect(surface, prepare.GREEN, self.rect, 2)
         else:
             pg.draw.rect(surface, prepare.RED, self.rect, 2)
-        #pg.draw.rect(surface, prepare.GREEN, (576,576,64,64),2)
         surface.blit(self.image, (self.x, self.y))
