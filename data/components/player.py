@@ -17,6 +17,7 @@ class Player(object):
         self.score = 0
         self.jumpPower = 5
         self.state = 0
+        self.currJump = 0
         self.direction = None
         self.collided = False
         self.canJump = True
@@ -24,10 +25,20 @@ class Player(object):
         self.collided = False
         self.collidedObjects = []
 
+        self.closestBlock = None
+
     def jump(self):
+        if self.canJump == False:
+            return
         if self.verticalVelocity < 0:
             self.verticalVelocity = 0
-        self.verticalVelocity -= self.jumpPower
+        if self.currJump == 1:
+            self.verticalVelocity -= self.jumpPower * 1.5
+        else:   
+            self.verticalVelocity -= self.jumpPower
+        self.currJump += 1
+        if self.currJump == 2:
+            self.canJump = False
 
     def applyGravity(self):
         self.verticalVelocity += 0.15
@@ -42,7 +53,10 @@ class Player(object):
             self.horizontalVelocity = 0
 
     def move(self, event):
-        pass
+        #this fires event events
+        if event.type == pg.KEYDOWN:
+            if event.key == pg.K_SPACE:
+                self.jump()
 
     def update(self):
         #Goal is to increment our vertical, and horizontal velocity
@@ -64,8 +78,6 @@ class Player(object):
             if self.direction == "Right":
                 self.image = pg.transform.flip(self.image, True, False)
             self.direction = "Left"
-        if keys[pg.K_SPACE]:
-            self.jump()
         if keys[pg.K_r]:
             self.y = 50
             self.x = 100
@@ -89,13 +101,12 @@ class Player(object):
             self.rect.y = newVelocityY
             self.collided = False
         else:
-            print("Y collision, self.y: ", self.y, ", self.rect.y: ", self.rect.y, ", y velocity: ", self.verticalVelocity, ", newRect.y: ",newRect.y)
+            self.collided = True
             if (len(ccollided) == 1):
                 #only one collided object
                 collidedObject = ccollided[0]
                 centerPlayer = newRect.centery
                 centerObject = collidedObject.rect.centery
-                self.collided = True
 
                 if (centerPlayer - centerObject > 0):
                     #player is below
@@ -107,6 +118,8 @@ class Player(object):
                     self.rect.bottom = collidedObject.rect.top
                     self.verticalVelocity = 0
                     self.y = self.rect.y
+                    self.canJump = True
+                    self.currJump = 0
             else:
                 closestBlock = None
                 closestNum = 0
@@ -114,16 +127,25 @@ class Player(object):
                     if closestBlock == None:
                         #first loop
                         closestBlock = tile
-                        closestNum = abs(tile.rect.centery - self.rect.centery)
-                    if abs(tile.rect.centery - self.rect.centery) < closestNum:
+                        closestNum = abs(tile.rect.centery - newRect.centery)
+                    if abs(tile.rect.centery - newRect.centery) < closestNum:
                         #something is closer
                         closestBlock = tile
+                self.closestBlock = closestBlock
                 #now we have our closest tile
-                self.rect.bottom = closestBlock.rect.top
-                self.verticalVelocity = 0
-                self.y = self.rect.y
-
-                
+                if (self.rect.centery - closestBlock.rect.centery > 0):
+                    #means that the closest block is above is
+                    print("bottom")
+                    self.rect.top = closestBlock.rect.bottom
+                    self.y = self.rect.y
+                    self.verticalVelocity = 0
+                else:
+                    #we are ontop of something
+                    self.canJump = True
+                    self.currJump = 0
+                    self.rect.bottom = closestBlock.rect.top
+                    self.verticalVelocity = 0
+                    self.y = self.rect.y
 
         newRect = self.rect
         newVelocityX = round(self.x + self.horizontalVelocity)
@@ -140,7 +162,6 @@ class Player(object):
             self.collided = True
             #it did collide on x axis do things
             centerPlayer = newRect.centerx
-            print("X collision, self.x: ", self.x, ", self.rect.x: ", self.rect.x, ", x velocity: ", self.horizontalVelocity, ", newRect.x: ",newRect.x)
             if (len(ccollided) == 1):
                 collidedObject = ccollided[0]
                 centerObject = collidedObject.rect.centerx
@@ -155,14 +176,35 @@ class Player(object):
                     self.horizontalVelocity = 0
                     self.x = self.rect.x
             else:
-                pass
+                closestBlock = None
+                closestNum = 0
+                for tile in ccollided:
+                    if closestBlock == None:
+                        #first loop
+                        closestBlock = tile
+                        closestNum = abs(tile.rect.centerx - newRect.centerx)
+                    if abs(tile.rect.centerx - newRect.centerx) < closestNum:
+                        #something is closer
+                        closestBlock = tile
+                self.closestBlock = closestBlock
+                #now we have our closest tile
+                if (self.rect.centerx - closestBlock.rect.centerx > 0):
+                    self.rect.left = closestBlock.rect.right
+                    self.x = self.rect.x
+                    self.horizontalVelocity = 0
+                else:
+                    self.rect.right = closestBlock.rect.left
+                    self.horizontalVelocity = 0
+                    self.x = self.rect.x
         
         self.rect.x = newRect.x
         self.rect.y = newRect.y
 
     def draw(self, surface):
-        if self.collided:
-            pg.draw.rect(surface, prepare.GREEN, self.rect, 2)
-        else:
-            pg.draw.rect(surface, prepare.RED, self.rect, 2)
+        # if self.closestBlock != None:
+        #     pg.draw.rect(surface, prepare.YELLOW, self.closestBlock, 2)
+        # if self.collided:
+        #     pg.draw.rect(surface, prepare.GREEN, self.rect, 2)
+        # else:
+        #     pg.draw.rect(surface, prepare.RED, self.rect, 2)
         surface.blit(self.image, (self.x, self.y))
