@@ -56,8 +56,6 @@ class WorldMap(object):
             # do some initial things
             logging.writeLog(f" {name}: loading for first time")
         return path
-        for object in self.mapOneObjTable:
-            object.draw()
     
     def update(self, now):
         self.level.update(now)

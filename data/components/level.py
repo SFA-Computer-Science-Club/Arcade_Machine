@@ -74,8 +74,9 @@ class Level(object):
         """
         groups = pg.sprite.Group(self.solids)
         self.all_group.update(now, self.player, groups, self.group_dict)
-        # self.check_collisions()
-    
+        # hits = self.check_collisions()
+        # self.player.collision_is_done(self.player, hits)
+
     def NOTUSED_check_collisions(self):
         """
         Check collisions and call the appropriate functions of the affected sprites.
@@ -84,8 +85,7 @@ class Level(object):
         groups = pg.sprite.Group(self.solids)
         hits = pg.sprite.spritecollide(self.player, groups, False, callback)
         for hit in hits:
-            if hit.get_name != 'Lumberjack':
-                hit.collide_with_player(self.player)
+            hit.collide_with_player(self.player)
 
     def draw(self, surface, interpolate):
         """Draw all sprites and background to the surface."""

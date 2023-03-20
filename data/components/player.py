@@ -3,7 +3,7 @@ import pygame as pg
 from  ..components import world, collision
 import math
 
-SPEED = 1.0
+SPEED = 2
 JUMP_POWER = 5
 
 class Player(tools._SpriteTemplate):
@@ -101,11 +101,12 @@ class Player(tools._SpriteTemplate):
             self.reset()
         self.applyFriction()
         self.applyGravity()
-
+        self.collision_is_done(player, groups)
         #after this point we have calculated all of our movement vectors, delta y and delta x
         #maybe rounding the numbers help?
         #add the velocity to the x and y, then just make sure you round them when you pass it to the function
 
+    def collision_is_done(self, player, groups):
         newVelocityY = round(self.rect.y + self.verticalVelocity)
 
         self.rect = self.rect
@@ -213,10 +214,6 @@ class Player(tools._SpriteTemplate):
                 else:
                     self.rect.right = closestBlock.rect.left
                     self.horizontalVelocity = 0
-                    
-        # self.rect.x = newRect.x
-        # self.rect.y = newRect.y
-
 
     def check_collisions(self, player, groups):
         """
