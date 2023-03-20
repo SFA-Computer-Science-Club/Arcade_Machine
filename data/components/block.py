@@ -11,12 +11,15 @@ class Block():
         self.image = image
         self.rect = rect
         self.id = id
-        self.collideable = True
+        self.canCollide = True
+
+    def onCollide(self, object):
+        pass
 
     def draw(self):
         prepare._screen.blit(self.image, (self.x,self.y))
 
     def setCollidable(self, value : bool):
-        self.collideable = value
+        self.canCollide = value
 
     

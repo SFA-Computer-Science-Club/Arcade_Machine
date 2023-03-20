@@ -48,6 +48,7 @@ _screen = pygame.display.set_mode(SCREEN_SIZE)
 
 #music
 mainTheme = os.path.join('resources','music','Platformer_Main_Menu_Song.mp3')
+victorySound = os.path.join('resources', 'music', 'success.mp3')
 
 #taken from game.py originally
 clock = pygame.time.Clock()
@@ -113,39 +114,10 @@ stoneTexture = pygame.transform.scale(pygame.image.load(os.path.join('resources'
 backGroundOne = pygame.transform.scale(pygame.image.load(os.path.join('resources','image','skybox_one.jpg')).convert(), SCREEN_SIZE)
 goldStoneTexture = pygame.transform.scale(pygame.image.load(os.path.join('resources','image','gold_stone.png')).convert(), (64,64))
 brickBlockTexture = pygame.transform.scale(pygame.image.load(os.path.join('resources','image','brick_block.png')).convert(), (64,64))
+testTexture = pygame.transform.scale(pygame.image.load(os.path.join('resources','image','test_image.png')).convert(), (64,64))
+fireTexture = pygame.transform.scale(pygame.image.load(os.path.join('resources','image','fire_block.png')).convert_alpha(), (64,64))
+goalTexture = pygame.transform.scale(pygame.image.load(os.path.join('resources','image','flag_texture.png')).convert_alpha(), (64,64))
 sfaCubeTexture = pygame.transform.scale(pygame.image.load(os.path.join('resources','image','sfa_cube.png')).convert(), (64,64))
 SPLASH1 = pygame.image.load(os.path.join('resources','image','SFA_CS_SPLASH.png'))
 titlewords = pygame.image.load(os.path.join('resources','image','Titlename.png'))
 playerImage = pygame.transform.scale(pygame.image.load(os.path.join('resources','image','LumberjackMale.png')).convert_alpha(), (90,140))
-
-
-# map table
-
-# mapOneObjTable = []
-
-# with open(testMap, 'r') as read_obj:
-#     csv_reader = csv.reader(read_obj)
-#     for rowIndex, row in enumerate(csv_reader):
-#         for columnIndex, column in enumerate(row):
-#                 x = columnIndex * 64
-#                 y = rowIndex * 64
-#                 if column == '1':
-
-#                     currentRowTable.append(dirtTexture)
-#                     mapOneRectTable.append(dirtTexture.get_rect().move(x,y))   
-#                 elif column == '2':
-#                     currentRowTable.append(goldStoneTexture)
-#                     mapOneRectTable.append(goldStoneTexture.get_rect().move(x,y))   
-#                 elif column == '3':
-#                     currentRowTable.append(grassTexture)
-#                     mapOneRectTable.append(grassTexture.get_rect().move(x,y))
-#                 elif column == '4':
-#                     currentRowTable.append(sfaCubeTexture)
-#                     mapOneRectTable.append(sfaCubeTexture.get_rect().move(x,y))        
-#                 elif column == '5':
-#                     currentRowTable.append(stoneTexture)
-#                     mapOneRectTable.append(stoneTexture.get_rect().move(x,y))
-#                 elif column == '6':
-#                     currentRowTable.append(brickBlockTexture)
-#                     mapOneRectTable.append(brickBlockTexture.get_rect().move(x,y))
-#         mapOneTable.append(currentRowTable)

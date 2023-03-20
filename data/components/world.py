@@ -4,6 +4,9 @@ import pygame as pg
 from csv import reader
 from .. import prepare, tools, logging
 from . import block
+from .tiles.fire import Fire
+from .tiles.goal import Goal
+
 
 class WorldMap(object):
     mapOneObjTable = []
@@ -31,9 +34,7 @@ class WorldMap(object):
                             self.mapOneObjTable.append(grassBlock)
                         elif column == '4':
                             sfaBlock = block.Block(x,y,"sfa_block",prepare.sfaCubeTexture,prepare.sfaCubeTexture.get_rect().move(x,y), id)
-                            sfaBlock.rect.x = x
-                            print("x: ", x," y:",y)
-                            sfaBlock.rect.y = y
+                            sfaBlock.setCollidable(False)
                             self.mapOneObjTable.append(sfaBlock)     
                         elif column == '5':
                             stoneBlock = block.Block(x,y,"stone_block",prepare.stoneTexture,prepare.stoneTexture.get_rect().move(x,y), id)
@@ -41,6 +42,14 @@ class WorldMap(object):
                         elif column == '6':
                             brickBlock = block.Block(x,y,"brick_block",prepare.brickBlockTexture,prepare.brickBlockTexture.get_rect().move(x,y), id)
                             self.mapOneObjTable.append(brickBlock)
+                        elif column == '7':
+                            fireBlock = Fire(x,y,"fire_block",prepare.fireTexture, prepare.fireTexture.get_rect().move(x,y), id, 1)
+                            fireBlock.setCollidable(False)
+                            self.mapOneObjTable.append(fireBlock)
+                        elif column == '8':
+                            flagBlock = Goal(x,y, "goal_block", prepare.goalTexture, prepare.goalTexture.get_rect().move(x,y), id, "You won!")
+                            flagBlock.setCollidable(False)
+                            self.mapOneObjTable.append(flagBlock)
                         id += 1
 
     
@@ -51,7 +60,6 @@ class WorldMap(object):
             # do some initial things
             logging.writeLog(f" {world_name}: loading for first time")
         prepare._screen.blit(prepare.backGroundOne, (0,0))         
-        # prepare._screen.blit(pg.transform.scale(prepare.backGroundOne, prepare.SCREEN_SIZE), (0,0))  
 
         # pass the file object to reader() to get the reader object
         # Iterate over each row in the csv using reader object
