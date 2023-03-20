@@ -28,7 +28,7 @@ class Player(tools._SpriteTemplate):
         self.score = 0
         self.state = 0
         self.currJump = 0
-        self.direction = None
+        self.direction = "Right"
         self.health = 100
         self.collided = False
         self.canJump = True
@@ -68,6 +68,12 @@ class Player(tools._SpriteTemplate):
     def move(self, event):
         #this fires event events
         if event.type == pg.KEYDOWN:
+            if event.key == pg.K_a and self.direction == "Right":
+                self.image = pg.transform.flip(self.image, True, False)
+                self.direction = "Left"
+            if event.key == pg.K_d and self.direction == "Left":
+                self.image = pg.transform.flip(self.image, True, False)
+                self.direction = "Right"            
             if event.key == pg.K_SPACE:
                 self.jump()
 
@@ -80,17 +86,17 @@ class Player(tools._SpriteTemplate):
                 self.horizontalVelocity = 3
             else:
                 self.horizontalVelocity += 0.15 * SPEED
-            if self.direction == "Right":
-                self.image = pg.transform.flip(self.image, True, False)
-            self.direction = "Left"
+            # if self.direction == "Right":
+                # self.image = pg.transform.flip(self.image, True, False)
+            # self.direction = "Left"
         if keys[pg.K_a]:
             if self.horizontalVelocity < -3:
                 self.horizontalVelocity = -3
             else:
                 self.horizontalVelocity -= 0.15 * SPEED
-            if self.direction == "Left":
-                self.image = pg.transform.flip(self.image, True, False)
-            self.direction = "Left"
+            # if self.direction == "Left":
+            #     self.image = pg.transform.flip(self.image, True, False)
+            # self.direction = "Left"
         if keys[pg.K_r]:
             self.reset()
         self.applyFriction()
@@ -102,8 +108,8 @@ class Player(tools._SpriteTemplate):
 
         newVelocityY = round(self.rect.y + self.verticalVelocity)
 
-        newRect = self.rect
-        newRect.y = newVelocityY
+        self.rect = self.rect
+        self.rect.y = newVelocityY
         # ccollided = self.collider.getCollidingObjects(newRect, world.WorldMap.mapOneObjTable)
         ccollided = self.check_collisions(player, groups)
         if (ccollided == False):
@@ -116,7 +122,7 @@ class Player(tools._SpriteTemplate):
             if (len(ccollided) == 1):
                 #only one collided object
                 collidedObject = ccollided
-                centerPlayer = newRect.centery
+                centerPlayer = self.rect.centery
                 centerObject = collidedObject[0].rect.centery
 
                 if (centerPlayer - centerObject > 0):
@@ -138,8 +144,8 @@ class Player(tools._SpriteTemplate):
                     if closestBlock == None:
                         #first loop
                         closestBlock = tile
-                        closestNum = abs(tile.rect.centery - newRect.centery)
-                    if abs(tile.rect.centery - newRect.centery) < closestNum:
+                        closestNum = abs(tile.rect.centery - self.rect.centery)
+                    if abs(tile.rect.centery - self.rect.centery) < closestNum:
                         #something is closer
                         closestBlock = tile
                 self.closestBlock = closestBlock
@@ -158,33 +164,33 @@ class Player(tools._SpriteTemplate):
                     self.verticalVelocity = 0
                     
 
-        newRect = self.rect
+        self.rect = self.rect
         newVelocityX = round(self.rect.x + self.horizontalVelocity)
-        newRect.x = newVelocityX
+        self.rect.x = newVelocityX
         
         # ccollided = self.collider.getCollidingObjects(newRect, world.WorldMap.mapOneObjTable)
         ccollided = self.check_collisions(player, groups)
         if ccollided == False:
             #nothing happened
             #self.rect.move(self.rect.x+self.horizontalVelocity,self.rect.y)
-            self.rect.x += self.horizontalVelocity
+            # self.rect.x += self.horizontalVelocity
             if (self.collided != True):
                 self.collided = False
         else:
             self.collided = True
             #it did collide on x axis do things
-            centerPlayer = newRect.centerx
+            centerPlayer = self.rect.centerx
             if (len(ccollided) == 1):
-                collidedObject = ccollided
-                centerObject = collidedObject[0].rect.centerx
+                collidedObject = ccollided[0]
+                centerObject = collidedObject.rect.centerx
                 if ((centerPlayer - centerObject) >= 0):
                     #player is to the right of the collided object
-                    self.rect.left = collidedObject[0].rect.right
+                    self.rect.left = collidedObject.rect.right
                     self.horizontalVelocity = 0
                     
                 else:
                     #player is to the left of the collided object
-                    self.rect.right = collidedObject[0].rect.left
+                    self.rect.right = collidedObject.rect.left
                     self.horizontalVelocity = 0
                     
             else:
@@ -194,8 +200,8 @@ class Player(tools._SpriteTemplate):
                     if closestBlock == None:
                         #first loop
                         closestBlock = tile
-                        closestNum = abs(tile.rect.centerx - newRect.centerx)
-                    if abs(tile.rect.centerx - newRect.centerx) < closestNum:
+                        closestNum = abs(tile.rect.centerx - self.rect.centerx)
+                    if abs(tile.rect.centerx - self.rect.centerx) < closestNum:
                         #something is closer
                         closestBlock = tile
                 self.closestBlock = closestBlock
@@ -208,8 +214,8 @@ class Player(tools._SpriteTemplate):
                     self.rect.right = closestBlock.rect.left
                     self.horizontalVelocity = 0
                     
-        self.rect.x = newRect.x
-        self.rect.y = newRect.y
+        # self.rect.x = newRect.x
+        # self.rect.y = newRect.y
 
 
     def check_collisions(self, player, groups):
