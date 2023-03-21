@@ -6,6 +6,7 @@ from .. import prepare, tools, logging
 from . import block
 from .tiles.fire import Fire
 from .tiles.goal import Goal
+from .tiles.explosive import Explosive
 
 
 class WorldMap(object):
@@ -50,6 +51,10 @@ class WorldMap(object):
                             flagBlock = Goal(x,y, "goal_block", prepare.goalTexture, prepare.goalTexture.get_rect().move(x,y), id, "You won!")
                             flagBlock.setCollidable(False)
                             self.mapOneObjTable.append(flagBlock)
+                        elif column == '9':
+                            explosiveBlock = Explosive(x,y, "explosive_block", prepare.explosiveTexture, prepare.explosiveTexture.get_rect().move(x,y), id, 100)
+                            explosiveBlock.setCollidable(False)
+                            self.mapOneObjTable.append(explosiveBlock)
                         id += 1
 
     

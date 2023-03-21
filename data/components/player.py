@@ -84,6 +84,8 @@ class Player(object):
             self.x = 100
             self.verticalVelocity = 0
             self.horizontalVelocity = 0
+            self.health = 100
+            self.finished = False
         self.applyFriction()
         self.applyGravity()
 

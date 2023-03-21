@@ -49,6 +49,7 @@ _screen = pygame.display.set_mode(SCREEN_SIZE)
 #music
 mainTheme = os.path.join('resources','music','Platformer_Main_Menu_Song.mp3')
 victorySound = os.path.join('resources', 'music', 'success.mp3')
+explosionSound = os.path.join('resources', 'music', 'explosion.mp3')
 
 #taken from game.py originally
 clock = pygame.time.Clock()
@@ -115,6 +116,8 @@ backGroundOne = pygame.transform.scale(pygame.image.load(os.path.join('resources
 goldStoneTexture = pygame.transform.scale(pygame.image.load(os.path.join('resources','image','gold_stone.png')).convert(), (64,64))
 brickBlockTexture = pygame.transform.scale(pygame.image.load(os.path.join('resources','image','brick_block.png')).convert(), (64,64))
 testTexture = pygame.transform.scale(pygame.image.load(os.path.join('resources','image','test_image.png')).convert(), (64,64))
+explosiveTexture = pygame.transform.scale(pygame.image.load(os.path.join('resources','image','tnt_block.png')).convert(), (64,64))
+explosiveSmokeTexture = fireTexture = pygame.transform.scale(pygame.image.load(os.path.join('resources','image','explosive_smoke.png')).convert_alpha(), (128,128))
 fireTexture = pygame.transform.scale(pygame.image.load(os.path.join('resources','image','fire_block.png')).convert_alpha(), (64,64))
 goalTexture = pygame.transform.scale(pygame.image.load(os.path.join('resources','image','flag_texture.png')).convert_alpha(), (64,64))
 sfaCubeTexture = pygame.transform.scale(pygame.image.load(os.path.join('resources','image','sfa_cube.png')).convert(), (64,64))
